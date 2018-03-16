@@ -1,6 +1,6 @@
 <template>
     <div class="sing-up-w">
-        <h1>登录</h1>
+
     </div>
 </template>
 
