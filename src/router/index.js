@@ -1,15 +1,46 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+
+//首页
+const Index = () => import('@/views/index')
+//登录
+const SingUp = () => import('@/views/singup')
+//注册
+const SingIn = () => import('@/views/singin')
+
+
 
 Vue.use(Router)
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
-  ]
+const router = new Router({
+    routes: [
+        {
+            path: '/',
+            meta: {title: "首页"},
+            component: Index
+        }, {
+            path: '/sing-up',
+            meta: {title: "登录"},
+            component: SingUp
+        }, {
+            path: '/sing-in',
+            meta: {title: "注册"},
+            component: SingIn
+        }
+    ]
 })
+
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.title) {//如果设置标题，拦截后设置标题
+        document.title = to.meta.title
+    }
+    sessionStorage.setItem('beforeUrl', from.path)
+
+    if (to.matched.length === 0) {//匹配不到相对应的路由时，跳转到首页
+        from.name ? next({name: from.name}) : next('/')
+    }
+    next()
+})
+
+export default router
