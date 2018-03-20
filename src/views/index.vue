@@ -1,6 +1,6 @@
 <template>
     <div class="index-w">
-        <h1>首页</h1>
+
     </div>
 </template>
 
@@ -17,6 +17,6 @@
         methods: {}
     }
 </script>
-<style scoped lang="less">
+<style lang="less">
 
 </style>
