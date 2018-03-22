@@ -1,5 +1,6 @@
 <template>
     <div class="index-w">
+        <search-page></search-page>
         <div class="w">
             <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index">
                 <div class="art-top-w clearfix">
@@ -26,11 +27,14 @@
 </template>
 
 <script>
+    //引入主菜单
     import MainMenu from '@/components/MainMenu'
+    //引入搜索框
+    import SearchPage from '@/components/SearchPage'
 
     export default {
         name: '',
-        components: {MainMenu},
+        components: {MainMenu, SearchPage},
         props: [],
         data() {
             return {
@@ -123,12 +127,12 @@
                 color: #fff;
                 margin-right: 1.5rem;
             }
-            .art-comment{
+            .art-comment {
                 vertical-align: middle;
                 color: #b2b2b2;
                 font-size: 1.5rem;
                 line-height: 1.8rem;
-                i{
+                i {
                     font-size: 1.8rem;
                     vertical-align: middle;
                 }

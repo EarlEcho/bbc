@@ -8,7 +8,8 @@ const SingUp = () => import('@/views/singup')
 //注册
 const SingIn = () => import('@/views/singin')
 
-
+//我的
+const My = () => import('@/views/my/index')
 
 Vue.use(Router)
 
@@ -26,6 +27,10 @@ const router = new Router({
             path: '/sing-in',
             meta: {title: "注册"},
             component: SingIn
+        }, {
+            path: '/my',
+            meta: {title: '个人中心'},
+            component: My
         }
     ]
 })
