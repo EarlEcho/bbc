@@ -27,6 +27,8 @@
 </template>
 
 <script>
+    import functions from '@/functions/common'
+
     //引入主菜单
     import MainMenu from '@/components/MainMenu'
     //引入搜索框
@@ -38,31 +40,15 @@
         props: [],
         data() {
             return {
-                articleList: [{
-                    iconUrl: require('../assets/image/1.jpg'),
-                    author: 'Echo',
-                    time: '2018/3/21',
-                    title: '从ES6重新认识JavaScript设计模式(一): 单例模式',
-                    classify: '前端',
-                    comment: 2
-                }, {
-                    iconUrl: require('../assets/image/1.jpg'),
-                    author: 'Echo',
-                    time: '2018/3/21',
-                    title: '从ES6重新认识JavaScript设计模式(一): 单例模式',
-                    classify: '后端',
-                    comment: 3
-                }, {
-                    iconUrl: require('../assets/image/1.jpg'),
-                    author: 'Echo',
-                    time: '2018/3/21',
-                    title: '从ES6重新认识JavaScript设计模式(一): 单例模式',
-                    classify: '服务器',
-                    comment: 1
-                }]
+                articleList: []
             }
         },
-        methods: {}
+        methods: {},
+        mounted(){
+            functions.getAjax('/datas/index-article-list.json', (data) => {
+                this.articleList = data.content.articleList;
+            });
+        }
     }
 </script>
 <style lang="less">
@@ -92,7 +78,7 @@
                 border-radius: 50%;
                 margin-right: 0.8rem;
                 img {
-                    width: 98%;
+                    width: 100%;
                 }
             }
             .art-author, .art-time {

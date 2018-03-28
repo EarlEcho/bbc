@@ -2,7 +2,7 @@
     <!--注册-->
     <div class="main-menu-w">
         <tabbar>
-            <tabbar-item  link="/">
+            <tabbar-item link="/">
                 <i slot="icon" class="icon ion-planet"></i>
                 <span slot="label">首页</span>
             </tabbar-item>
@@ -31,7 +31,7 @@
     }
 </script>
 <style lang="less">
-    .main-menu-w{
+    .main-menu-w {
         position: fixed;
         bottom: 0;
         left: 0;
