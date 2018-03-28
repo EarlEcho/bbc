@@ -1,10 +1,10 @@
 import qs from 'qs'
-
+import axios from 'axios';
 // axios 配置
 axios.defaults.timeout = 5000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8';
-axios.defaults.baseURL = '';
+axios.defaults.baseURL = 'http://localhost:8080/static/';
 // POST传参序列化
 axios.interceptors.request.use(function (config) {
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded';

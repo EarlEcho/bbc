@@ -1,40 +1,6 @@
 import axios from '../../config/http'
-import ToastBox from '@/components/toast/toast.js'
 
-let dz = {
-    getChildClass() {
-        this.postAjax('/my/get-student-class', {}, (data) => {
-            if (data.code == 0) {
-                localStorage.setItem('pwClassInfo', JSON.stringify(data.content.classes))
-            } else {
-                if (localStorage.getItem('pwClassInfo')) {
-                    localStorage.removeItem('pwClassInfo')
-                }
-            }
-        })
-    },
-    getParentInfo() {
-        this.postAjax('/my/get-parent-info', {}, (data) => {
-            if (data.code == 0) {
-                localStorage.setItem('pwParentInfo', JSON.stringify(data.content.parentInfo))
-            } else {
-                if (localStorage.getItem('pwParentInfo')) {
-                    localStorage.removeItem('pwParentInfo')
-                }
-            }
-        })
-    },
-    getChildInfo() {
-        this.postAjax('/my/get-parent-students', {}, (data) => {
-            if (data.code == 0) {
-                localStorage.setItem('pwStudentInfo', JSON.stringify(data.content.students))
-            } else {
-                if (localStorage.getItem('pwStudentInfo')) {
-                    localStorage.removeItem('pwStudentInfo')
-                }
-            }
-        })
-    },
+let functions = {
     getAjax(url, callback) {
         axios({
             method: 'get',
@@ -192,5 +158,5 @@ let dz = {
     }
 
 };
-dz.timestampQuantum()
-export default dz
+functions.timestampQuantum()
+export default functions

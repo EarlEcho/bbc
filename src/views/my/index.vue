@@ -14,6 +14,11 @@
 </template>
 
 <script>
+    import functions from '@/functions/common'
+
+
+    //接口数据
+
     import {Blur} from 'vux'
     //引入主菜单
     import MainMenu from '@/components/MainMenu'
@@ -30,7 +35,12 @@
                 }
             }
         },
-        methods: {}
+        methods: {},
+        mounted() {
+            functions.getAjax('/datas/data.json', (data) => {
+
+            });
+        }
     }
 </script>
 <style lang="less">
@@ -59,7 +69,7 @@
                 line-height: 3.4rem;
             }
         }
-        .my-actions-list{
+        .my-actions-list {
 
         }
     }
