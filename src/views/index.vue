@@ -3,23 +3,25 @@
         <search-page></search-page>
         <div class="w">
             <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index">
-                <div class="art-top-w clearfix">
-                    <div class="art-icon g-lf">
-                        <img :src="articleItem.iconUrl" alt="">
+                <router-link to="/article-detail">
+                    <div class="art-top-w clearfix">
+                        <div class="art-icon g-lf">
+                            <img :src="articleItem.iconUrl" alt="">
+                        </div>
+                        <span class="art-author">{{articleItem.author}}</span>
+                        <span class="art-time g-rt">{{articleItem.time}}</span>
                     </div>
-                    <span class="art-author">{{articleItem.author}}</span>
-                    <span class="art-time g-rt">{{articleItem.time}}</span>
-                </div>
-                <div class="art-bottom-w">
-                    <p class="art-title">{{articleItem.title}}</p>
-                    <p class="art-others">
-                        <span class="art-classify">{{articleItem.classify}}</span>
-                        <span class="art-comment">
-                            <i class="icon ion-chatbox-working"></i>
-                            {{articleItem.comment}}
-                        </span>
-                    </p>
-                </div>
+                    <div class="art-bottom-w">
+                        <p class="art-title">{{articleItem.title}}</p>
+                        <p class="art-others">
+                            <span class="art-classify">{{articleItem.classify}}</span>
+                            <span class="art-comment">
+                                <i class="icon ion-chatbox-working"></i>
+                                {{articleItem.comment}}
+                            </span>
+                        </p>
+                    </div>
+                </router-link>
             </div>
         </div>
         <main-menu></main-menu>
@@ -44,7 +46,7 @@
             }
         },
         methods: {},
-        mounted(){
+        mounted() {
             functions.getAjax('/datas/index-article-list.json', (data) => {
                 this.articleList = data.content.articleList;
             });

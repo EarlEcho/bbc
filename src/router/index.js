@@ -11,6 +11,9 @@ const SingIn = () => import('@/views/singin')
 //我的
 const My = () => import('@/views/my/index')
 
+//文章详情
+const ArticleDetail = () => import('@/views/article/detail')
+
 Vue.use(Router)
 
 const router = new Router({
@@ -31,6 +34,10 @@ const router = new Router({
             path: '/my',
             meta: {title: '个人中心'},
             component: My
+        }, {
+            path: '/article-detail',
+            meta: {title: '文章详情'},
+            component: ArticleDetail
         }
     ]
 })
