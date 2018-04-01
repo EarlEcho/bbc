@@ -1,7 +1,7 @@
 <template>
     <!--注册-->
     <div class="main-menu-w">
-        <tabbar>
+        <tabbar @on-index-change="mainSwitchEvent" v-model="tabIndex">
             <tabbar-item link="/">
                 <i slot="icon" class="icon ion-planet"></i>
                 <span slot="label">首页</span>
@@ -27,6 +27,20 @@
             TabbarItem,
             Group,
             Cell
+        },
+        data() {
+            return {
+                tabIndex: 0
+            }
+        },
+        props: ['tabbarIndex'],
+        created: function () {
+            this.tabIndex = parseInt(this.tabbarIndex);
+        },
+        methods: {
+            mainSwitchEvent() {
+                this.tabIndex =  parseInt(this.tabbarIndex);
+            }
         }
     }
 </script>

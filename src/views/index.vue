@@ -24,7 +24,7 @@
                 </router-link>
             </div>
         </div>
-        <main-menu></main-menu>
+        <main-menu tabbarIndex="0"></main-menu>
     </div>
 </template>
 

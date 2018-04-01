@@ -32,7 +32,7 @@
                 </cell>
             </group>
         </div>
-        <main-menu></main-menu>
+        <main-menu tabbarIndex="2"></main-menu>
     </div>
 </template>
 
