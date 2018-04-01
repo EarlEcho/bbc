@@ -1,7 +1,7 @@
 <template>
     <div class="my-index-w">
         <div class="my-base-infos-w">
-            <blur :blur-amount=15 :url.sync="userInfo.icon">
+            <blur :blur-amount="15" :url="userInfo.icon">
                 <p class="center"><img :src="userInfo.icon"></p>
                 <p class="my-name">{{userInfo.name}}</p>
             </blur>
@@ -59,7 +59,7 @@
         mounted() {
             functions.getAjax('/datas/user-info.json', (data) => {
                 this.userInfo = data.content.userInfo;
-                console.log(this.userInfo)
+                console.log(typeof this.userInfo.icon)
             });
         }
     }
