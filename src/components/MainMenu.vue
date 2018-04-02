@@ -6,7 +6,7 @@
                 <i slot="icon" class="icon ion-planet"></i>
                 <span slot="label">首页</span>
             </tabbar-item>
-            <tabbar-item>
+            <tabbar-item link="/classify">
                 <i slot="icon" class="icon ion-ios-keypad"></i>
                 <span slot="label">分类</span>
             </tabbar-item>
