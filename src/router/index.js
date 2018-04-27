@@ -18,6 +18,11 @@ const ArticleDetail = () => import('@/views/article/detail')
 //分类
 const ClassifyList = () => import('@/views/classify/index')
 
+
+//文章列表
+
+const ArticleList = () => import('@/views/article/list')
+
 Vue.use(Router)
 
 const router = new Router({
@@ -46,6 +51,10 @@ const router = new Router({
             path: '/classify',
             meta: {title: '分类'},
             component: ClassifyList
+        }, {
+            path: '/article-list',
+            meta: {title: '文章列表'},
+            component: ArticleList
         }
     ]
 })
