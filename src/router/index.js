@@ -20,8 +20,16 @@ const ClassifyList = () => import('@/views/classify/index')
 
 
 //文章列表
-
 const ArticleList = () => import('@/views/article/list')
+
+//我的文章列表
+const MyList = () => import('@/views/my/articleList')
+
+//个人资料
+const MyInfo = () => import('@/views/my/info')
+
+//发布文章
+const ArticleCreate = () => import('@/views/article/create')
 
 Vue.use(Router)
 
@@ -55,6 +63,18 @@ const router = new Router({
             path: '/article-list',
             meta: {title: '文章列表'},
             component: ArticleList
+        }, {
+            path: '/article-add',
+            meta: {title: '新增文章'},
+            component: ArticleCreate
+        }, {
+            path: '/my-list',
+            meta: {title: '我的文字'},
+            component: MyList
+        }, {
+            path: '/my-info',
+            meta: {title: '个人资料'},
+            component: MyInfo
         }
     ]
 })

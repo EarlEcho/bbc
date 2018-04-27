@@ -8,17 +8,17 @@
         </div>
         <div class="my-actions-list">
             <group>
-                <cell is-link>
+                <cell is-link link="/my-info">
                     <span slot="title" class="action-title">
                         个人资料
                     </span>
                 </cell>
-                <cell is-link>
+                <cell is-link link="/article-add">
                     <span slot="title" class="action-title">
                         发布文章
                     </span>
                 </cell>
-                <cell is-link>
+                <cell is-link link="/my-list">
                     <span slot="title" class="action-title">
                         我的文章
                     </span>
