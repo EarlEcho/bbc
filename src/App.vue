@@ -11,8 +11,9 @@
 </script>
 
 <style lang="less">
-    @import 'assets/css/common.css';
+    @import 'assets/css/common.less';
     @import 'assets/css/ionicons.min.css';
+    @import 'assets/css/comment.less';
 
     .art-classify {
         display: inline-block;

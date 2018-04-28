@@ -4,6 +4,14 @@
             <x-input title="用户名" v-model="infoForm.title" placeholder="请输入用户名"></x-input>
             <x-textarea title="个人简介" v-model="infoForm.content" placeholder="请输入个人简介" :show-counter="true" :rows="5">
             </x-textarea>
+            <checker v-model="infoForm.sex" default-item-class="sex-item" selected-item-class="sex-item-selected">
+                <span class="weui-cell__hd">
+                    <label style="display: inline-block;width: 6rem;margin-right: 2rem;text-align: right">性别</label>
+                </span>
+                <checker-item value="1">男</checker-item>
+                <checker-item value="2">女</checker-item>
+                <checker-item value="3">保密</checker-item>
+            </checker>
         </group>
         <div class="article-submit-w">
             <submit-btn submit-url="/" submit-method="POST" :before-submit="beforeSubmit"
@@ -19,18 +27,18 @@
     import SubmitBtn from '@/components/SubmitBtn'
 
     import functions from '@/functions/common'
-    import {Group, XInput, XTextarea, Cell} from 'vux'
+    import {Group, XInput, XTextarea, Cell, Checker, CheckerItem} from 'vux'
 
     export default {
         name: '',
-        components: {SubmitBtn, Group, XInput, XTextarea, Cell},
+        components: {SubmitBtn, Group, XInput, XTextarea, Cell, Checker, CheckerItem},
         props: [],
         data() {
             return {
-
                 infoForm: {
                     title: '',
                     content: '',
+                    sex: '',
                     class: ''
                 },
                 //class选择器弹出框
@@ -82,6 +90,7 @@
         .weui-cell {
             margin-bottom: 1rem;
             background-color: white;
+            padding: 1rem 1.2rem;
         }
 
         .article-submit-w {
@@ -90,6 +99,22 @@
             left: 5%;
             width: 90%;
             margin: 0 auto;
+        }
+
+        .vux-checker-box {
+            background-color: white;
+            padding: 1rem 1.2rem;
+        }
+        .sex-item {
+            border: solid 1px lightblue;
+            padding: 0.5rem 1rem;
+            border-radius: 0.4rem;
+            margin-right: 1rem;
+        }
+
+        .sex-item-selected {
+            background-color: lightblue;
+            color: white;
         }
     }
 </style>
