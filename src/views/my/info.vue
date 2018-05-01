@@ -1,21 +1,20 @@
 <template>
     <div class="article-create-w">
         <group label-width="6rem" label-margin-right="2rem" label-align="right" class="article-group">
-            <x-input title="用户名" v-model="infoForm.title" placeholder="请输入用户名"></x-input>
-            <x-textarea title="个人简介" v-model="infoForm.content" placeholder="请输入个人简介" :show-counter="true" :rows="5">
+            <x-input title="用户名" v-model="userInfo.nickName" placeholder="请输入用户名"></x-input>
+            <x-textarea title="个人简介" v-model="userInfo.introduce" placeholder="请输入个人简介" :show-counter="true" :rows="5">
             </x-textarea>
-            <checker v-model="infoForm.sex" default-item-class="sex-item" selected-item-class="sex-item-selected">
+            <checker v-model="userInfo.sex" default-item-class="sex-item" selected-item-class="sex-item-selected">
                 <span class="weui-cell__hd">
                     <label style="display: inline-block;width: 6rem;margin-right: 2rem;text-align: right">性别</label>
                 </span>
-                <checker-item value="1">男</checker-item>
-                <checker-item value="2">女</checker-item>
-                <checker-item value="3">保密</checker-item>
+                <checker-item value="1" key="1">男</checker-item>
+                <checker-item value="0" key="0">女</checker-item>
             </checker>
         </group>
         <div class="article-submit-w">
-            <submit-btn submit-url="/" submit-method="POST" :before-submit="beforeSubmit"
-                        :submit-data="infoForm"
+            <submit-btn submit-url="/user/info/update" submit-method="POST" :before-submit="beforeSubmit"
+                        :submit-data="userInfo"
                         :submit-handler="submitSuccess" submit-form-ref="signUpForm" btn-text="修改"
             ></submit-btn>
         </div>
@@ -24,6 +23,8 @@
 </template>
 
 <script>
+
+
     import SubmitBtn from '@/components/SubmitBtn'
 
     import functions from '@/functions/common'
@@ -35,40 +36,36 @@
         props: [],
         data() {
             return {
-                infoForm: {
-                    title: '',
-                    content: '',
-                    sex: '',
-                    class: ''
+                userInfo: {
+                    id:'',
+                    nickName: '',
+                    introduce: '',
+                    sex: '0'
                 },
-                //class选择器弹出框
-                tabIndex: 0,
-                classifyItems: [],
-                classifyList: [],
-                showClassPopup: false,
-            }
-        },
-        methods: {
-            beforeSubmit() {
-
-            },
-            submitSuccess() {
-
-            },
-            fetchClass() {
-                functions.getAjax('/datas/classify.json', (data) => {
-                    this.classifyList = data.classfiyList;
-                    this.classifyItems = this.classifyList[0].children;
-
-                });
-            },
-            handlerTab(index) {
-                this.classifyItems = this.classifyList[index].children;
-                console.log(this.classifyItems);
             }
         },
         mounted() {
-            this.fetchClass();
+            this.fetchInfo();
+        },
+        methods: {
+            fetchInfo() {
+                functions.getAjax('/user/info/getLoginUser', (res) => {
+                    this.userInfo ={
+                        id:res.id,
+                        nickName: res.nickName,
+                        introduce: res.introduce,
+                        sex: res.sex
+                    };
+                });
+            },
+            beforeSubmit() {
+                console.log(this.userInfo)
+                return true;
+            },
+            submitSuccess() {
+                alert('修改个人信息成功');
+                // this.$router.go(0);
+            },
         }
     }
 </script>

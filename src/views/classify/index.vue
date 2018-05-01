@@ -37,7 +37,7 @@
         },
         methods: {
             fetchClass() {
-                functions.getAjax('/datas/classify.json', (data) => {
+                functions.getAjax('http://localhost:8070/static/datas/classify.json', (data) => {
                     this.classifyList = data.classfiyList;
                     this.classifyItems = this.classifyList[0].children;
 

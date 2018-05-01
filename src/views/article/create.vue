@@ -4,24 +4,25 @@
             <x-input title="标题" v-model="articleForm.title" placeholder="请输入标题"></x-input>
             <x-textarea title="内容" v-model="articleForm.content" placeholder="请输入内容" :show-counter="true" :rows="12">
             </x-textarea>
-            <cell title="类别" :value="articleForm.class" is-link @click.native="handleClass"></cell>
+            <cell title="类别" :value="articleForm.type" is-link @click.native="handleClass"></cell>
         </group>
         <div class="article-submit-w">
-            <submit-btn submit-url="/" submit-method="POST" :before-submit="beforeSubmit"
+            <submit-btn submit-url="/user/article/save" submit-method="POST" :before-submit="beforeSubmit"
                         :submit-data="articleForm"
                         :submit-handler="submitSuccess" submit-form-ref="signUpForm" btn-text="发表文章"
             ></submit-btn>
         </div>
         <popup v-model="showClassPopup" height="50%">
             <Tab v-model="tabIndex">
-                <TabItem v-for="(item,index) in classifyList" :key="index"   @on-item-click="handlerTab(index)">
+                <TabItem v-for="(item,index) in classifyList" :key="index" @on-item-click="handlerTab(index)">
                     {{item.label}}
                 </TabItem>
             </Tab>
             <div class="classify-item">
-                <checker v-model="articleForm.class" default-item-class="class-item"
+                <checker v-model="articleForm.type" default-item-class="class-item"
                          selected-item-class="class-item-selected">
-                    <checker-item v-for="(classfiy,index) in classifyItems" :key="index" :value="classfiy.id">{{classfiy.label}}
+                    <checker-item v-for="(classfiy,index) in classifyItems" :key="index" :value="classfiy.label">
+                        {{classfiy.label}}
                     </checker-item>
                 </checker>
             </div>
@@ -45,7 +46,7 @@
                 articleForm: {
                     title: '',
                     content: '',
-                    class: ''
+                    type: ''
                 },
                 //class选择器弹出框
                 tabIndex: 0,
@@ -57,12 +58,15 @@
         methods: {
             beforeSubmit() {
 
-            },
-            submitSuccess() {
+                console.log(this.articleForm);
+                return true;
 
             },
+            submitSuccess() {
+                alert('发布文章成功！');
+            },
             fetchClass() {
-                functions.getAjax('/datas/classify.json', (data) => {
+                functions.getAjax('http://localhost:8070/static/datas/classify.json', (data) => {
                     this.classifyList = data.classfiyList;
                     this.classifyItems = this.classifyList[0].children;
 

@@ -2,9 +2,10 @@
     <div class="article-detail-w">
         <div class="detail-header-w">
             <div>
-                <img :src="articleDeatil.icon" alt="">
-                <span>{{articleDeatil.author}}</span>
-                <span class="g-rt">{{articleDeatil.time}}</span>
+
+                <img :src="articleDeatil.userInfo.photoPath==null?defaultIcon:articleDeatil.userInfo.photoPath">
+                <span>{{articleDeatil.userInfo.nickName}}</span>
+                <span class="g-rt">{{articleDeatil.createTime | toTime}}</span>
             </div>
 
         </div>
@@ -12,21 +13,26 @@
             <p class="article-title-w">{{articleDeatil.title}}</p>
             <p class="art-content" v-html="articleDeatil.content">
             </p>
-            <p>标签：<span class="art-classify">{{articleDeatil.classify}}</span></p>
+            <p>标签：<span class="art-classify">{{articleDeatil.type}}</span></p>
         </div>
 
         <!--文章评论-->
         <div class="article-comment-w">
             <p class="write-comment" @click="showWritePopup=true">写评论</p>
             <p class="comment-name">评论区</p>
-            <div class="comment-item" v-for="commentItem in commentList" @click="commentDetail(commentItem.id)">
+            <div v-show="articleDeatil.comments.length==0">
+                <p>暂无评论</p>
+            </div>
+            <div class="comment-item" v-for="commentItem in articleDeatil.comments"
+                 @click="commentDetail(commentItem.id)">
                 <div class="comment-header clearfix">
                     <div class="c-left g-lf">
-                        <img :src="commentItem.icon" alt="">
+                        <img :src="commentItem.userInfo.photoPath==null?defaultIcon:commentItem.userInfo.photoPath">
+
                     </div>
                     <div class="c-right g-lf">
-                        <p>{{commentItem.name}}</p>
-                        <p>{{commentItem.time}}</p>
+                        <p>{{commentItem.userInfo.nickName}}</p>
+                        <p>{{commentItem.createTime | toTime}}</p>
                     </div>
                 </div>
                 <p class="comment-info">{{commentItem.content}}</p>
@@ -43,12 +49,12 @@
         <!--评论弹窗-->
         <popup v-model="showWritePopup" height="30%" class="article-comment-input">
             <group>
-                <x-textarea v-model="commentText" placeholder="请输入评论" :show-counter="true" :rows="4">
+                <x-textarea v-model="commentData.content" placeholder="请输入评论" :show-counter="true" :rows="4">
                 </x-textarea>
             </group>
 
-            <submit-btn submit-url="/" submit-method="POST" :before-submit="beforeSubmitComment"
-                        :submit-data="commentText"
+            <submit-btn submit-url="/user/comment/save" submit-method="POST" :before-submit="beforeSubmitComment"
+                        :submit-data="commentData"
                         :submit-handler="submitSuccess" submit-form-ref="signUpForm" btn-text="发送评论"
             ></submit-btn>
         </popup>
@@ -79,7 +85,7 @@
                         </div>
                         <div class="c-right g-lf">
                             <p>{{inner.name}}</p>
-                            <p>{{inner.time}}</p>
+                            <p>{{inner.time }}</p>
                         </div>
                     </div>
                     <p class="comment-info">{{inner.content}}</p>
@@ -96,10 +102,17 @@
 
     export default {
         name: '',
-        components: {Popup, XTextarea, Group,SubmitBtn},
+        components: {Popup, XTextarea, Group, SubmitBtn},
         props: [],
         data() {
             return {
+                commentData: {
+                    content: '',
+                    'article.id': this.$route.params.id
+                },
+
+
+                defaultIcon: 'static/image/default-icon.jpg',
                 articleDeatil: {},
                 showWritePopup: false,
                 commentText: '',
@@ -145,16 +158,25 @@
                         content: '插件为一个数组列表，根据需要可以添加你需要的插件，插件名为必须，有些组件不需要额外配置选项。',
                     }]
                 }
-
+            }
+        },
+        filters: {
+            toTime(value) {
+                return functions.timestampToshortText(value);
             }
         },
         methods: {
-
             beforeSubmitComment() {
-
+                if (this.commentData.content == '') {
+                    alert("评论不能为空哦");
+                    return;
+                } else {
+                    return true;
+                }
             },
             submitSuccess() {
-
+                alert("评论成功");
+                this.$router.go(0);
             },
             //查看评论详情
             commentDetail(id) {
@@ -162,9 +184,14 @@
             }
         },
         mounted() {
-            functions.getAjax('/datas/article-detail.json', (data) => {
-                this.articleDeatil = data.content.articleDeatil;
+            let id = this.$route.params.id;
+            functions.getAjax('/user/article/getOne?id=' + id, (res) => {
+                this.articleDeatil = res.data;
             });
+            this.commentData = {
+                content: '',
+                'article.id': this.$route.params.id
+            }
         }
     }
 </script>

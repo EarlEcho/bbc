@@ -2,26 +2,25 @@
     <div class="index-w">
         <search-page></search-page>
         <div class="w">
-            <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index">
-                <router-link to="/article-detail">
-                    <div class="art-top-w clearfix">
-                        <div class="art-icon g-lf">
-                            <img :src="articleItem.userInfo.photoPath" alt="">
-                        </div>
-                        <span class="art-author">{{articleItem.userInfo.nickName}}</span>
-                        <span class="art-time g-rt">{{articleItem.createTime | toTime}}</span>
+            <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index"
+                 @click="toDetail(articleItem.id )">
+                <div class="art-top-w clearfix">
+                    <div class="art-icon g-lf">
+                        <img :src="articleItem.userInfo.photoPath==null?defaultIcon:articleItem.userInfo.photoPath">
                     </div>
-                    <div class="art-bottom-w">
-                        <p class="art-title">{{articleItem.title}}</p>
-                        <p class="art-others">
-                            <span class="art-classify">{{articleItem.type}}</span>
-                            <span class="art-comment">
+                    <span class="art-author">{{articleItem.userInfo.nickName}}</span>
+                    <span class="art-time g-rt">{{articleItem.createTime | toTime}}</span>
+                </div>
+                <div class="art-bottom-w">
+                    <p class="art-title">{{articleItem.title}}</p>
+                    <p class="art-others">
+                        <span class="art-classify">{{articleItem.type}}</span>
+                        <span class="art-comment">
                                 <i class="icon ion-chatbox-working"></i>
                                 {{articleItem.comments.length}}
                             </span>
-                        </p>
-                    </div>
-                </router-link>
+                    </p>
+                </div>
             </div>
         </div>
         <main-menu tabbarIndex="0"></main-menu>
@@ -41,6 +40,7 @@
         components: {MainMenu, SearchPage},
         data() {
             return {
+                defaultIcon: 'static/image/default-icon.jpg',
                 articleList: [],
                 pager: {
                     page: 1
@@ -53,6 +53,13 @@
                 console.log(res)
                 this.articleList = res.data.content;
             });
+        },
+        methods: {
+            toDetail(id) {
+                this.$router.push({
+                    path: '/article-detail/' + id,
+                });
+            }
         },
         filters: {
             toTime(value) {
@@ -69,6 +76,7 @@
         background-color: #f1f1f1;
         .w {
             padding: 0.8rem;
+            margin-bottom: 55px;
         }
     }
 

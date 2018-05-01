@@ -2,26 +2,25 @@
     <div class="article-list-w">
         <x-header>我的文章列表</x-header>
         <div class="w">
-            <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index">
-                <router-link to="/article-detail">
-                    <div class="art-top-w clearfix">
-                        <div class="art-icon g-lf">
-                            <img :src="articleItem.iconUrl" alt="">
-                        </div>
-                        <span class="art-author">{{articleItem.author}}</span>
-                        <span class="art-time g-rt">{{articleItem.time}}</span>
+            <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index"
+                 @click="toDetail(articleItem.id )">
+                <div class="art-top-w clearfix">
+                    <div class="art-icon g-lf">
+                        <img :src="articleItem.userInfo.photoPath==null?defaultIcon:articleItem.userInfo.photoPath">
                     </div>
-                    <div class="art-bottom-w">
-                        <p class="art-title">{{articleItem.title}}</p>
-                        <p class="art-others">
-                            <span class="art-classify">{{articleItem.classify}}</span>
-                            <span class="art-comment">
+                    <span class="art-author">{{articleItem.userInfo.nickName}}</span>
+                    <span class="art-time g-rt">{{articleItem.createTime | toTime}}</span>
+                </div>
+                <div class="art-bottom-w">
+                    <p class="art-title">{{articleItem.title}}</p>
+                    <p class="art-others">
+                        <span class="art-classify">{{articleItem.type}}</span>
+                        <span class="art-comment">
                                 <i class="icon ion-chatbox-working"></i>
-                                {{articleItem.comment}}
+                                {{articleItem.comments.length}}
                             </span>
-                        </p>
-                    </div>
-                </router-link>
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -38,14 +37,26 @@
         props: [],
         data() {
             return {
+                defaultIcon: 'static/image/default-icon.jpg',
                 articleList: []
             }
         },
-        methods: {},
+        methods: {
+            toDetail(id) {
+                this.$router.push({
+                    path: '/article-detail/' + id,
+                });
+            }
+        },
         mounted() {
-            functions.getAjax('/datas/index-article-list.json', (data) => {
-                this.articleList = data.content.articleList;
+            functions.getAjax('/user/info/listPersonArticle', (res) => {
+                this.articleList = res.data.content;
             });
+        },
+        filters: {
+            toTime(value) {
+                return functions.timestampToshortText(value);
+            }
         }
     }
 </script>

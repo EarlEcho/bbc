@@ -1,10 +1,25 @@
 <template>
     <div class="my-index-w">
+        <div class="change-icon">
+            <div class="upload">
+                修改头像
+                <input name="file" class="change" type="file" accept="image/png,image/jpeg" @change="update"/>
+            </div>
+        </div>
         <div class="my-base-infos-w">
-            <blur :blur-amount="12" :url="userInfo.icon">
-                <p class="center"><img :src="userInfo.icon"></p>
-                <p class="my-name">{{userInfo.name}}</p>
-            </blur>
+            <div v-if="userInfo.photoPath==null">
+                <blur :blur-amount="12" :url="defaultIcon">
+                    <p class="center"><img :src="defaultIcon"></p>
+                    <p class="my-name">{{userInfo.nickName}}</p>
+                </blur>
+            </div>
+            <div v-else>
+                <blur :blur-amount="12" :url="userInfo.photoPath">
+                    <p class="center"><img :src="userInfo.photoPath"></p>
+                    <p class="my-name">{{userInfo.nickName}}</p>
+                </blur>
+            </div>
+
         </div>
         <div class="my-actions-list">
             <group>
@@ -37,25 +52,97 @@
 </template>
 
 <script>
+    import Uploader from 'vux-uploader'
+
     import functions from '@/functions/common'
     import {Blur, Group, Cell} from 'vux'
     import MainMenu from '@/components/MainMenu'
+
+    import axios from 'axios'
+
+
     export default {
         name: '',
-        components: {MainMenu, Blur, Group, Cell},
+        components: {Uploader, MainMenu, Blur, Group, Cell},
         data() {
             return {
-                userInfo: {}
+                defaultIcon: 'static/image/default-icon.jpg',
+                userInfo: {},
+                iconUrl: []
             }
         },
+        methods: {
+            // 添加请求头
+            update(e) {  // 上传照片
+                var self = this
+                let file = e.target.files[0]
+                let param = new FormData() // 创建form对象
+                param.append('file', file, file.name) // 通过append向form对象添加数据
+                param.append('chunk', '0') // 添加form表单中其他数据
+                //console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+                let config = {
+                    headers: {'Content-Type': 'multipart/form-data'}
+                }
+                // 添加请求头
+                axios.post('http://10.10.20.158:8010/user/info/fileUpload', param, config).then(response => {
+                    if (response.data.code === 200) {
+                        self.ImgUrl = response.data.data
+                    }
+                    console.log(response.data)
+                })
+            },
+            previewMethod() {
+
+            },
+            addImageMethod() {
+
+            },
+
+            removeImageMethod() {
+
+            },
+
+        },
         mounted() {
-            functions.getAjax('/datas/user-info.json', (data) => {
-                this.userInfo = data.content.userInfo;
+            functions.getAjax('/user/info/getLoginUser', (res) => {
+                console.log(res);
+                this.userInfo = res;
+
+
+                axios.interceptors.request.use(function (config) {
+                    config.headers['Content-Type'] = 'multipart/form-data';
+                    return config;
+                });
+
+
             });
         }
     }
 </script>
 <style lang="less">
+    .change-icon {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        z-index: 5;
+    }
+
+    .upload {
+        padding: 0.6rem 1.2rem;
+        position: relative;
+        border: 1px solid #8a8a8a;
+        border-radius: 0.8rem;
+        color: #8a8a8a;
+    }
+
+    .change {
+        position: absolute;
+        overflow: hidden;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+
     .my-index-w {
         position: absolute;
         width: 100%;

@@ -52,7 +52,7 @@ const router = new Router({
             meta: {title: '个人中心'},
             component: My
         }, {
-            path: '/article-detail',
+            path: '/article-detail/:id',
             meta: {title: '文章详情'},
             component: ArticleDetail
         }, {

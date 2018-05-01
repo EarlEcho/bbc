@@ -41,7 +41,15 @@
         methods: {
             beforeSubmit() {
                 console.log(this.signUpForm);
-                return true;
+                if (this.signUpForm.emailAddress=='') {
+                    alert('邮箱格式错误');
+                    return
+                }else if(this.signUpForm.password.length<6){
+                    alert('密码必须大于等于6位');
+                }else{
+                    return true;
+                }
+
             },
             submitSuccess(res) {
                 alert('登陆成功');
