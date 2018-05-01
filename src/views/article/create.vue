@@ -14,14 +14,14 @@
         </div>
         <popup v-model="showClassPopup" height="50%">
             <Tab v-model="tabIndex">
-                <TabItem v-for="(item,index) in classifyList" @on-item-click="handlerTab(index)">
+                <TabItem v-for="(item,index) in classifyList" :key="index"   @on-item-click="handlerTab(index)">
                     {{item.label}}
                 </TabItem>
             </Tab>
             <div class="classify-item">
                 <checker v-model="articleForm.class" default-item-class="class-item"
                          selected-item-class="class-item-selected">
-                    <checker-item v-for="classfiy in classifyItems" :value="classfiy.id">{{classfiy.label}}
+                    <checker-item v-for="(classfiy,index) in classifyItems" :key="index" :value="classfiy.id">{{classfiy.label}}
                     </checker-item>
                 </checker>
             </div>

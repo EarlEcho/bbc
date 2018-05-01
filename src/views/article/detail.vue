@@ -72,7 +72,7 @@
                     <p class="parent-comment-info">{{commentDetailList.content}}</p>
                     <!--某个评论的子评论-->
                 </div>
-                <div class="comment-for-this" v-for="inner in commentDetailList.childComment">
+                <div class="comment-for-this" v-for="(inner,index) in commentDetailList.childComment" :key="index">
                     <div class="comment-header clearfix">
                         <div class="c-left g-lf">
                             <img :src="inner.icon" alt="">

@@ -2,12 +2,12 @@
     <div class="classify-index-w">
 
         <Tab v-model="tabIndex">
-            <TabItem v-for="(item,index) in classifyList" @on-item-click="handlerTab(index)">
+            <TabItem v-for="(item,index) in classifyList" :key="index" @on-item-click="handlerTab(index)">
                 {{item.label}}
             </TabItem>
         </Tab>
         <div class="classify-item">
-            <span v-for="classfiy in classifyItems">
+            <span v-for="(classfiy,index) in classifyItems" :key="index">
                 <router-link to="/article-list">
                 {{classfiy.label}}
                 </router-link>
@@ -22,15 +22,12 @@
 <script>
     import MainMenu from '@/components/MainMenu'
     import functions from '@/functions/common'
-
     import {Tab, TabItem} from 'vux'
-
     export default {
         name: '',
         components: {
             MainMenu, Tab, TabItem
         },
-        props: [],
         data() {
             return {
                 tabIndex: 0,
@@ -48,7 +45,6 @@
             },
             handlerTab(index) {
                 this.classifyItems = this.classifyList[index].children;
-                console.log(this.classifyItems);
             }
         },
         mounted() {

@@ -10,6 +10,7 @@
 <script>
     import {XButton, Toast} from 'vux'
     import functions from '@/functions/common'
+    import axios from '../../config/http'
 
     export default {
         components: {
@@ -31,14 +32,11 @@
         },
         methods: {
             beginSubmit: function () {
-                /*if (this.beforeSubmit) {
-//                    this.beforeSubmit();
+                if (this.beforeSubmit) {
                     if (this.beforeSubmit() != true) {
                         return
                     }
                 }
-
-
                 this.loading = true;
                 this.buttonText = "正在" + this.buttonText;
                 this.disable = true;
@@ -66,7 +64,7 @@
                     }).catch((response) => {
                         console.log(response)
                     })
-                }*/
+                }
 
             },
             afterSubmit: function (response) {
@@ -79,7 +77,7 @@
                 //处理返回结果
                 var result = response.data;
                 console.log(result);
-                if (result.code == 0) {
+                if (result.code == 200) {
                     this.submitHandler(result);
                 } else {
                     functions.toast(result.msg, 'top')
@@ -95,10 +93,6 @@
         button {
             width: 100%;
         }
-    }
-
-    .weui-btn_disabled.weui-btn_primary {
-        background-color: #4aaff5;
     }
 
 </style>

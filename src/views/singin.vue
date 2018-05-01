@@ -2,15 +2,22 @@
     <div class="sing-up-w">
         <p class="sing-up-tile">注册</p>
         <group ref="signUpForm" :model="signUpForm" class="sign-up-form-w">
-            <x-input is-type="china-mobile" v-model="signUpForm.mobile" type="number"
-                     required placeholder="手机号"></x-input>
-            <x-input placeholder="密码" v-model="signUpForm.pwd" type="password"
+            <x-input v-model="signUpForm.nickName"
+                     required placeholder="用户名"></x-input>
+            <x-input v-model="signUpForm.emailAddress" is-type="email"
+                     required placeholder="邮箱"></x-input>
+            <div class="valid-input">
+                <x-input v-model="signUpForm.token"
+                         required placeholder="验证码"></x-input>
+                <x-button type="primary" :disabled="tokenDisabled" @click.native="handelToken">{{tokenText}}</x-button>
+            </div>
+            <x-input placeholder="密码" v-model="signUpForm.password" type="password"
                      required></x-input>
 
-            <submit-btn submit-url="/" submit-method="POST" :before-submit="beforeSubmit"
+            <submit-btn submit-url="/auth/register" submit-method="POST" :before-submit="beforeSubmit"
                         :submit-data="signUpForm"
                         :submit-handler="submitSuccess" submit-form-ref="signUpForm" btn-text="注册"
-                        class="login-btn"></submit-btn>
+            ></submit-btn>
         </group>
         <p class="sign-up-other-action">
             <router-link to="/sing-up">
@@ -21,32 +28,78 @@
 </template>
 
 <script>
-    import {Group, XInput} from 'vux'
+    import {Group, XInput, XButton, Toast} from 'vux'
     import SubmitBtn from '@/components/SubmitBtn'
+    import functions from '@/functions/common'
+
 
     export default {
         name: '',
-        components: {Group, XInput, SubmitBtn},
+        components: {Group, XInput, SubmitBtn, XButton, Toast},
         props: [],
         data() {
             return {
+                tokenDisabled: false,
+                tokenText: '获取验证码',
                 signUpForm: {
-                    mobile: '',
-                    pwd: ''
+                    nickName: '',
+                    emailAddress: '',
+                    token: '',
+                    password: ''
                 }
             }
         },
         methods: {
+            handelToken() {
+                var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+                if (!reg.test(this.signUpForm.emailAddress)) {
+                    alert('输入邮箱');
+                    return
+                }
+                functions.postAjax('/auth/sendEmail', {address: this.signUpForm.emailAddress}, (data) => {
+                    if (data.code == 200) {
+                        alert('发送成功');
+                        this.tokenDisabled = true;
+                        this.tokenText = '60s';
+                    }
+                })
+            },
             beforeSubmit() {
+                const data = this.signUpForm;
+                if (data.nickName) {
 
+                } else if (data.emailAddress) {
+
+                } else if (data.password) {
+
+                } else if (data.token) {
+
+                }
+
+                return true;
             },
             submitSuccess() {
-
+                alert('注册成功');
+                this.$router.replace('/sing-up');
             }
         }
     }
 </script>
 <style lang="less">
+    .valid-input {
+        .vux-x-input {
+            display: inline-block;
+            width: 58%;
+            margin-right: 1rem;
+        }
+        button.weui-btn {
+            width: 30%;
+            float: right;
+            font-size: 1.6rem;
+            vertical-align: middle;
+        }
+    }
+
     .sing-up-w {
         position: absolute;
         width: 100%;

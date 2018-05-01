@@ -1,7 +1,7 @@
 <template>
     <div class="my-index-w">
         <div class="my-base-infos-w">
-            <blur :blur-amount="15" :url="userInfo.icon">
+            <blur :blur-amount="12" :url="userInfo.icon">
                 <p class="center"><img :src="userInfo.icon"></p>
                 <p class="my-name">{{userInfo.name}}</p>
             </blur>
@@ -38,28 +38,19 @@
 
 <script>
     import functions from '@/functions/common'
-
-
-    //接口数据
-
     import {Blur, Group, Cell} from 'vux'
-    //引入主菜单
     import MainMenu from '@/components/MainMenu'
-
     export default {
         name: '',
         components: {MainMenu, Blur, Group, Cell},
-        props: [],
         data() {
             return {
                 userInfo: {}
             }
         },
-        methods: {},
         mounted() {
             functions.getAjax('/datas/user-info.json', (data) => {
                 this.userInfo = data.content.userInfo;
-                console.log(typeof this.userInfo.icon)
             });
         }
     }

@@ -6,18 +6,18 @@
                 <router-link to="/article-detail">
                     <div class="art-top-w clearfix">
                         <div class="art-icon g-lf">
-                            <img :src="articleItem.iconUrl" alt="">
+                            <img :src="articleItem.userInfo.photoPath" alt="">
                         </div>
-                        <span class="art-author">{{articleItem.author}}</span>
-                        <span class="art-time g-rt">{{articleItem.time}}</span>
+                        <span class="art-author">{{articleItem.userInfo.nickName}}</span>
+                        <span class="art-time g-rt">{{articleItem.createTime | toTime}}</span>
                     </div>
                     <div class="art-bottom-w">
                         <p class="art-title">{{articleItem.title}}</p>
                         <p class="art-others">
-                            <span class="art-classify">{{articleItem.classify}}</span>
+                            <span class="art-classify">{{articleItem.type}}</span>
                             <span class="art-comment">
                                 <i class="icon ion-chatbox-working"></i>
-                                {{articleItem.comment}}
+                                {{articleItem.comments.length}}
                             </span>
                         </p>
                     </div>
@@ -39,17 +39,25 @@
     export default {
         name: '',
         components: {MainMenu, SearchPage},
-        props: [],
         data() {
             return {
-                articleList: []
+                articleList: [],
+                pager: {
+                    page: 1
+                }
             }
         },
-        methods: {},
+
         mounted() {
-            functions.getAjax('/datas/index-article-list.json', (data) => {
-                this.articleList = data.content.articleList;
+            functions.getAjax('/user/article/pageListArticle', (res) => {
+                console.log(res)
+                this.articleList = res.data.content;
             });
+        },
+        filters: {
+            toTime(value) {
+                return functions.timestampToshortText(value);
+            }
         }
     }
 </script>

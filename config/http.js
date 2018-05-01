@@ -1,13 +1,24 @@
 import qs from 'qs'
-import axios from 'axios';
+import axios from 'axios'
 // axios 配置
+
+//取登录后的sid
+console.log(localStorage);
+if (localStorage.sid) {
+    axios.defaults.headers.sid = (localStorage.sid);
+
+}
+
 axios.defaults.timeout = 5000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8';
-axios.defaults.baseURL = 'http://10.10.20.191:8070/static';
+axios.defaults.baseURL = 'http://10.10.20.158:8010';
+
+
 // POST传参序列化
 axios.interceptors.request.use(function (config) {
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+
     if (config.method === 'post') {
         config.data = qs.stringify(config.data);
     }

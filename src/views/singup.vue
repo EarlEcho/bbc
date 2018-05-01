@@ -2,11 +2,11 @@
     <div class="sing-up-w">
         <p class="sing-up-tile">登录</p>
         <group ref="signUpForm" :model="signUpForm" class="sign-up-form-w">
-            <x-input is-type="china-mobile" v-model="signUpForm.mobile" type="number"
-                     required placeholder="手机号"></x-input>
-            <x-input placeholder="密码" v-model="signUpForm.pwd" type="password"
+            <x-input is-type="email" v-model="signUpForm.emailAddress"
+                     required placeholder="邮箱"></x-input>
+            <x-input placeholder="密码" v-model="signUpForm.password" type="password"
                      required></x-input>
-            <submit-btn submit-url="/" submit-method="POST" :before-submit="beforeSubmit"
+            <submit-btn submit-url="/auth/sidToken" submit-method="POST" :before-submit="beforeSubmit"
                         :submit-data="signUpForm"
                         :submit-handler="submitSuccess" submit-form-ref="signUpForm" btn-text="登录"
                         class="login-btn"></submit-btn>
@@ -33,17 +33,24 @@
         data() {
             return {
                 signUpForm: {
-                    mobile: '',
-                    pwd: ''
+                    emailAddress: '',
+                    password: ''
                 }
             }
         },
         methods: {
             beforeSubmit() {
-
+                console.log(this.signUpForm);
+                return true;
             },
-            submitSuccess() {
+            submitSuccess(res) {
+                alert('登陆成功');
 
+                console.log(res.data);
+
+                localStorage.setItem('sid',(res.data));
+
+                this.$router.replace('/');
             }
         }
     }
