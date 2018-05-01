@@ -27,7 +27,6 @@
                 window.alert('you click the result item: ' + JSON.stringify(item))
             },
             getResult(val) {
-                console.log('on-change', val)
                 this.results = val ? getResult(this.value) : []
             },
             onSubmit() {
@@ -39,10 +38,8 @@
                 })
             },
             onFocus() {
-                console.log('on focus')
             },
             onCancel() {
-                console.log('on cancel')
             }
         }
     }

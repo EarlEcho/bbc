@@ -2,6 +2,7 @@
     <div class="index-w">
         <search-page></search-page>
         <div class="w">
+            <no-info></no-info>
             <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index"
                  @click="toDetail(articleItem.id )">
                 <div class="art-top-w clearfix">
@@ -18,7 +19,7 @@
                         <span class="art-comment">
                                 <i class="icon ion-chatbox-working"></i>
                                 {{articleItem.comments.length}}
-                            </span>
+                        </span>
                     </p>
                 </div>
             </div>
@@ -29,15 +30,16 @@
 
 <script>
     import functions from '@/functions/common'
-
     //引入主菜单
     import MainMenu from '@/components/MainMenu'
+    import NoInfo from '@/components/NoInfo'
+
     //引入搜索框
     import SearchPage from '@/components/SearchPage'
 
     export default {
         name: '',
-        components: {MainMenu, SearchPage},
+        components: {NoInfo, MainMenu, SearchPage},
         data() {
             return {
                 defaultIcon: 'static/image/default-icon.jpg',
@@ -50,7 +52,6 @@
 
         mounted() {
             functions.getAjax('/user/article/pageListArticle', (res) => {
-                console.log(res)
                 this.articleList = res.data.content;
             });
         },

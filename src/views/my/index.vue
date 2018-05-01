@@ -41,7 +41,7 @@
             </group>
             <group>
                 <cell>
-                    <span slot="title" class="action-title">
+                    <span slot="title" @click="exitLogin" class="action-title">
                         退出登录
                     </span>
                 </cell>
@@ -79,42 +79,31 @@
                 let param = new FormData() // 创建form对象
                 param.append('file', file, file.name) // 通过append向form对象添加数据
                 param.append('chunk', '0') // 添加form表单中其他数据
-                //console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
                 let config = {
                     headers: {'Content-Type': 'multipart/form-data'}
                 }
                 // 添加请求头
                 axios.post('http://10.10.20.158:8010/user/info/fileUpload', param, config).then(response => {
                     if (response.data.code === 200) {
-                        self.ImgUrl = response.data.data
+                        self.userInfo.photoPath = response.data.data;
                     }
-                    console.log(response.data)
                 })
             },
-            previewMethod() {
-
-            },
-            addImageMethod() {
-
-            },
-
-            removeImageMethod() {
-
-            },
+            exitLogin() {
+                alert('1111');
+                functions.postAjax('/user/info/logout', {}, (res) => {
+                    localStorage.setItem('sid', '');
+                    if (res.code == 200) {
+                        alert('退出登陆成功');
+                        this.$router.replace('/sing-up');
+                    }
+                });
+            }
 
         },
         mounted() {
             functions.getAjax('/user/info/getLoginUser', (res) => {
-                console.log(res);
                 this.userInfo = res;
-
-
-                axios.interceptors.request.use(function (config) {
-                    config.headers['Content-Type'] = 'multipart/form-data';
-                    return config;
-                });
-
-
             });
         }
     }
@@ -130,9 +119,9 @@
     .upload {
         padding: 0.6rem 1.2rem;
         position: relative;
-        border: 1px solid #8a8a8a;
+        border: 1px solid #f5f5f5;
         border-radius: 0.8rem;
-        color: #8a8a8a;
+        color: #f5f5f5;
     }
 
     .change {

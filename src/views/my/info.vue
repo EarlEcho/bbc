@@ -4,12 +4,12 @@
             <x-input title="用户名" v-model="userInfo.nickName" placeholder="请输入用户名"></x-input>
             <x-textarea title="个人简介" v-model="userInfo.introduce" placeholder="请输入个人简介" :show-counter="true" :rows="5">
             </x-textarea>
-            <checker v-model="userInfo.sex" default-item-class="sex-item" selected-item-class="sex-item-selected">
+            <checker v-model="userInfo.gender" default-item-class="gender-item" selected-item-class="gender-item-selected">
                 <span class="weui-cell__hd">
                     <label style="display: inline-block;width: 6rem;margin-right: 2rem;text-align: right">性别</label>
                 </span>
-                <checker-item value="1" key="1">男</checker-item>
-                <checker-item value="0" key="0">女</checker-item>
+                <checker-item value=1 key=1>男</checker-item>
+                <checker-item value=0 key=0>女</checker-item>
             </checker>
         </group>
         <div class="article-submit-w">
@@ -40,7 +40,7 @@
                     id:'',
                     nickName: '',
                     introduce: '',
-                    sex: '0'
+                    gender: '0'
                 },
             }
         },
@@ -54,12 +54,11 @@
                         id:res.id,
                         nickName: res.nickName,
                         introduce: res.introduce,
-                        sex: res.sex
+                        gender: String(res.gender)
                     };
                 });
             },
             beforeSubmit() {
-                console.log(this.userInfo)
                 return true;
             },
             submitSuccess() {
@@ -102,14 +101,14 @@
             background-color: white;
             padding: 1rem 1.2rem;
         }
-        .sex-item {
+        .gender-item {
             border: solid 1px lightblue;
             padding: 0.5rem 1rem;
             border-radius: 0.4rem;
             margin-right: 1rem;
         }
 
-        .sex-item-selected {
+        .gender-item-selected {
             background-color: lightblue;
             color: white;
         }

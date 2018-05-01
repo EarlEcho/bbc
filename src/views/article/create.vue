@@ -57,8 +57,6 @@
         },
         methods: {
             beforeSubmit() {
-
-                console.log(this.articleForm);
                 return true;
 
             },
@@ -74,7 +72,6 @@
             },
             handlerTab(index) {
                 this.classifyItems = this.classifyList[index].children;
-                console.log(this.classifyItems);
             },
             handleClass() {
                 this.showClassPopup = true;

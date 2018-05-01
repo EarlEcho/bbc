@@ -3,7 +3,6 @@ import axios from 'axios'
 // axios 配置
 
 //取登录后的sid
-console.log(localStorage);
 if (localStorage.sid) {
     axios.defaults.headers.sid = (localStorage.sid);
 

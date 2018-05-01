@@ -40,7 +40,6 @@
         },
         methods: {
             beforeSubmit() {
-                console.log(this.signUpForm);
                 if (this.signUpForm.emailAddress=='') {
                     alert('邮箱格式错误');
                     return
@@ -53,8 +52,6 @@
             },
             submitSuccess(res) {
                 alert('登陆成功');
-
-                console.log(res.data);
 
                 localStorage.setItem('sid',(res.data));
 
