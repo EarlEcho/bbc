@@ -20,9 +20,8 @@
         <div class="article-comment-w">
             <p class="write-comment" @click="showWritePopup=true">写评论</p>
             <p class="comment-name">评论区</p>
-            <div v-show="articleDeatil.comments.length==0">
-                <p>暂无评论</p>
-            </div>
+            <no-comment v-show="articleDeatil.comments.length==0"></no-comment>
+
             <div class="comment-item" v-for="commentItem in articleDeatil.comments"
                  @click="commentDetail(commentItem.id)">
                 <div class="comment-header clearfix">
@@ -99,10 +98,11 @@
     import functions from '@/functions/common'
     import {Popup, XTextarea, Group} from 'vux'
     import SubmitBtn from '@/components/SubmitBtn'
+    import NoComment from '@/components/NoComment'
 
     export default {
         name: '',
-        components: {Popup, XTextarea, Group, SubmitBtn},
+        components: {NoComment, Popup, XTextarea, Group, SubmitBtn},
         props: [],
         data() {
             return {
@@ -110,8 +110,6 @@
                     content: '',
                     'article.id': this.$route.params.id
                 },
-
-
                 defaultIcon: 'static/image/default-icon.jpg',
                 articleDeatil: {},
                 showWritePopup: false,

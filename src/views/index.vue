@@ -1,8 +1,8 @@
 <template>
     <div class="index-w">
         <search-page></search-page>
+        <no-info v-show="articleList.length==0"></no-info>
         <div class="w">
-            <no-info></no-info>
             <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index"
                  @click="toDetail(articleItem.id )">
                 <div class="art-top-w clearfix">

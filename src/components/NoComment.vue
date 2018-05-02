@@ -1,6 +1,6 @@
 <template>
     <div class="no-info-w">
-        <img src="static/image/noinfo.png" alt="">
+        <img src="static/image/nocomment.png" alt="">
     </div>
 </template>
 
@@ -20,7 +20,7 @@
         text-align: center;
         img {
             position: relative;
-            width: 100%;
+            width: 75%;
         }
     }
 </style>
