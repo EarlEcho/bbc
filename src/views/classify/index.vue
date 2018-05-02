@@ -68,12 +68,12 @@
             span {
                 display: inline-block;
                 padding: 0.8rem 1.2rem;
-                background-color: lightblue;
+                background-color: #09bb07;
                 margin: 0 1.5rem 1rem 0;
                 border-radius: 0.7rem;
                 font-size: 1.3rem;
                 a{
-                    color: #efeff4;
+                    color: white;
                 }
             }
 

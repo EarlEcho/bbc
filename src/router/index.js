@@ -28,6 +28,9 @@ const MyList = () => import('@/views/my/articleList')
 //个人资料
 const MyInfo = () => import('@/views/my/info')
 
+//其他用户的个人资料
+const Users = () => import('@/views/users/index')
+
 //发布文章
 const ArticleCreate = () => import('@/views/article/create')
 
@@ -75,6 +78,10 @@ const router = new Router({
             path: '/my-info',
             meta: {title: '个人资料'},
             component: MyInfo
+        }, {
+            path: '/users/:id',
+            meta: {title: '用户信息'},
+            component: Users
         }
     ]
 })

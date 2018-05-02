@@ -1,5 +1,5 @@
 <template>
-    <div class="no-info-w">
+    <div class="no-comment-w">
         <img src="static/image/nocomment.png" alt="">
     </div>
 </template>
@@ -16,7 +16,7 @@
     }
 </script>
 <style lang="less">
-    .no-info-w {
+    .no-comment-w {
         text-align: center;
         img {
             position: relative;

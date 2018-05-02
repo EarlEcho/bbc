@@ -39,6 +39,7 @@
         },
         methods: {
             mainSwitchEvent() {
+
                 this.tabIndex =  parseInt(this.tabbarIndex);
             }
         }

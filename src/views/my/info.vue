@@ -2,7 +2,7 @@
     <div class="article-create-w">
         <group label-width="6rem" label-margin-right="2rem" label-align="right" class="article-group">
             <x-input title="用户名" v-model="userInfo.nickName" placeholder="请输入用户名"></x-input>
-            <x-textarea title="个人简介" v-model="userInfo.introduce" placeholder="请输入个人简介" :show-counter="true" :rows="5">
+            <x-textarea :max="150" title="个人简介" v-model="userInfo.introduce" placeholder="请输入个人简介" :show-counter="true" :rows="5">
             </x-textarea>
             <checker v-model="userInfo.gender" default-item-class="gender-item" selected-item-class="gender-item-selected">
                 <span class="weui-cell__hd">
@@ -62,8 +62,10 @@
                 return true;
             },
             submitSuccess() {
-                alert('修改个人信息成功');
-                // this.$router.go(0);
+                this.$vux.toast.text('修改个人信息成功');
+                setTimeout(() => {
+                    this.$router.replace('/my');
+                }, 1500)
             },
         }
     }
@@ -102,14 +104,14 @@
             padding: 1rem 1.2rem;
         }
         .gender-item {
-            border: solid 1px lightblue;
+            border: solid 1px #09bb07;
             padding: 0.5rem 1rem;
             border-radius: 0.4rem;
             margin-right: 1rem;
         }
 
         .gender-item-selected {
-            background-color: lightblue;
+            background-color: #09bb07;
             color: white;
         }
     }

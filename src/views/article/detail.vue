@@ -13,7 +13,7 @@
             <p class="article-title-w">{{articleDeatil.title}}</p>
             <p class="art-content" v-html="articleDeatil.content">
             </p>
-            <p>标签：<span class="art-classify">{{articleDeatil.type}}</span></p>
+            <p>标签：<span class="art-classify" v-for="item in articleDeatil.type">{{item}}</span></p>
         </div>
 
         <!--文章评论-->
@@ -166,15 +166,17 @@
         methods: {
             beforeSubmitComment() {
                 if (this.commentData.content == '') {
-                    alert("评论不能为空哦");
+                    this.$vux.toast.text('评论不能为空哦');
                     return;
                 } else {
                     return true;
                 }
             },
             submitSuccess() {
-                alert("评论成功");
-                this.$router.go(0);
+                this.$vux.toast.text('评论成功');
+                setTimeout(() => {
+                    this.$router.go(0);
+                }, 1000)
             },
             //查看评论详情
             commentDetail(id) {
@@ -185,6 +187,7 @@
             let id = this.$route.params.id;
             functions.getAjax('/user/article/getOne?id=' + id, (res) => {
                 this.articleDeatil = res.data;
+                this.articleDeatil.type = this.articleDeatil.type.split(',');
             });
             this.commentData = {
                 content: '',
