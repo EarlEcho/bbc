@@ -6,7 +6,7 @@
             <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index">
                 <div class="art-top-w clearfix">
                     <div class="art-icon g-lf" @click="viewUser(articleItem.userInfo.id)">
-                        <img :src="articleItem.userInfo.photoPath==null?defaultIcon:articleItem.userInfo.photoPath">
+                        <img :src="articleItem.userInfo.photoPath===null?defaultIcon:articleItem.userInfo.photoPath">
                     </div>
                     <span class="art-author">{{articleItem.userInfo.nickName}}</span>
                     <span class="art-time g-rt">{{articleItem.createTime | toTime}}</span>

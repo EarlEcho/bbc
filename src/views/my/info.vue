@@ -1,16 +1,23 @@
 <template>
     <div class="article-create-w">
         <group label-width="6rem" label-margin-right="2rem" label-align="right" class="article-group">
+
             <x-input title="用户名" v-model="userInfo.nickName" placeholder="请输入用户名"></x-input>
-            <x-textarea :max="150" title="个人简介" v-model="userInfo.introduce" placeholder="请输入个人简介" :show-counter="true" :rows="5">
+            <x-textarea :max="150" title="个人简介" v-model="userInfo.introduce" placeholder="请输入个人简介" :show-counter="true"
+                        :rows="5">
             </x-textarea>
-            <checker v-model="userInfo.gender" default-item-class="gender-item" selected-item-class="gender-item-selected">
+            <checker v-model="userInfo.gender" default-item-class="gender-item"
+                     selected-item-class="gender-item-selected">
                 <span class="weui-cell__hd">
                     <label style="display: inline-block;width: 6rem;margin-right: 2rem;text-align: right">性别</label>
                 </span>
                 <checker-item value=1 key=1>男</checker-item>
                 <checker-item value=0 key=0>女</checker-item>
             </checker>
+        </group>
+        <group label-width="6rem" label-margin-right="2rem" label-align="right" class="article-group">
+            <cell title="注册时间" :value="toTime(otherInfo.createTime)"></cell>
+            <cell title="注册邮箱" :value="otherInfo.emailAddress"></cell>
         </group>
         <div class="article-submit-w">
             <submit-btn submit-url="/user/info/update" submit-method="POST" :before-submit="beforeSubmit"
@@ -37,11 +44,14 @@
         data() {
             return {
                 userInfo: {
-                    id:'',
+                    id: '',
                     nickName: '',
                     introduce: '',
                     gender: '0'
                 },
+                otherInfo:{
+
+                }
             }
         },
         mounted() {
@@ -50,12 +60,17 @@
         methods: {
             fetchInfo() {
                 functions.getAjax('/user/info/getLoginUser', (res) => {
-                    this.userInfo ={
-                        id:res.id,
+                    this.userInfo = {
+                        id: res.id,
                         nickName: res.nickName,
                         introduce: res.introduce,
                         gender: String(res.gender)
+
                     };
+                    this.otherInfo ={
+                        createTime: res.createTime,
+                        emailAddress: res.emailAddress
+                    }
                 });
             },
             beforeSubmit() {
@@ -67,7 +82,10 @@
                     this.$router.replace('/my');
                 }, 1500)
             },
-        }
+            toTime(value) {
+                return functions.timestampToshortText(value);
+            }
+        },
     }
 </script>
 <style lang="less">

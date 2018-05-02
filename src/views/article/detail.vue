@@ -2,8 +2,8 @@
     <div class="article-detail-w">
         <div class="detail-header-w">
             <div>
-
-                <img :src="articleDeatil.userInfo.photoPath==null?defaultIcon:articleDeatil.userInfo.photoPath">
+                <img :src="articleDeatil.userInfo.photoPath===null?defaultIcon:articleDeatil.userInfo.photoPath"
+                     @click="viewUser(articleDeatil.userInfo.id)">
                 <span>{{articleDeatil.userInfo.nickName}}</span>
                 <span class="g-rt">{{articleDeatil.createTime | toTime}}</span>
             </div>
@@ -26,7 +26,7 @@
                  @click="commentDetail(commentItem.id)">
                 <div class="comment-header clearfix">
                     <div class="c-left g-lf">
-                        <img :src="commentItem.userInfo.photoPath==null?defaultIcon:commentItem.userInfo.photoPath">
+                        <img :src="commentItem.userInfo.photoPath===null?defaultIcon:commentItem.userInfo.photoPath">
 
                     </div>
                     <div class="c-right g-lf">
@@ -164,6 +164,11 @@
             }
         },
         methods: {
+            viewUser(id) {
+                this.$router.push({
+                    path: '/users/' + id,
+                });
+            },
             beforeSubmitComment() {
                 if (this.commentData.content == '') {
                     this.$vux.toast.text('评论不能为空哦');
