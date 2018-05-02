@@ -78,7 +78,7 @@
                 defaultIcon: 'static/image/default-icon.jpg',
                 userInfo: {},
                 iconUrl: [],
-                judgeLogin:true,
+                judgeLogin: true,
             }
         },
         methods: {
@@ -100,13 +100,24 @@
                 })
             },
             exitLogin() {
-                functions.postAjax('/user/info/logout', {}, (res) => {
-                    localStorage.setItem('sid', '');
-                    if (res.code == 200) {
-                        alert('退出登陆成功');
-                        this.$router.replace('/sing-up');
+                let _this = this;
+                this.$vux.confirm.show({
+                    title: '提示',
+                    content: '确认退出登录吗？',
+                    // 组件除show外的属性
+                    onConfirm() {
+                        functions.postAjax('/user/info/logout', {}, (res) => {
+                            localStorage.setItem('sid', '');
+                            if (res.code == 200) {
+                                _this.$vux.toast.text('退出登陆成功');
+                                setTimeout(() => {
+                                    _this.$router.replace('/sing-up');
+                                }, 1000)
+                            }
+                        });
                     }
-                });
+                })
+
             }
 
         },
@@ -114,7 +125,6 @@
             functions.getAjax('/user/info/getLoginUser', (res) => {
                 this.userInfo = res;
                 if (res.code == 403) {
-                    // alert('请先登录')
                     this.judgeLogin = false;
                 }
             });
@@ -144,9 +154,9 @@
     .upload {
         padding: 0.6rem 1.2rem;
         position: relative;
-        border: 1px solid #f5f5f5;
+        border: 1px solid #353535;
         border-radius: 0.8rem;
-        color: #f5f5f5;
+        color: #353535;
     }
 
     .change {

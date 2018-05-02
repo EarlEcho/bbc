@@ -23,6 +23,6 @@
         padding: 0 0.6rem;
         border-radius: 1rem;
         color: #fff;
-        margin-right: 1.5rem;
+        margin-right: 1rem;
     }
 </style>

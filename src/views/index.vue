@@ -15,7 +15,7 @@
                 <div class="art-bottom-w">
                     <p class="art-title">{{articleItem.title}}</p>
                     <p class="art-others">
-                        <span class="art-classify">{{articleItem.type}}</span>
+                        <span class="art-classify" v-for="item in articleItem.type">{{item}}</span>
                         <span class="art-comment">
                                 <i class="icon ion-chatbox-working"></i>
                                 {{articleItem.comments.length}}
@@ -55,6 +55,10 @@
         mounted() {
             functions.getAjax('/user/article/pageListArticle', (res) => {
                 this.articleList = res.data.content;
+
+                for (let i = 0; i < this.articleList.length; i++) {
+                    this.articleList[i].type = this.articleList[i].type.split(',');
+                }
             });
         },
         methods: {
@@ -76,7 +80,7 @@
         position: absolute;
         width: 100%;
         min-height: 100%;
-        background-color: white;
+        background-color: #f5f5f5;
         .w {
             padding: 0.8rem;
             margin-bottom: 55px;

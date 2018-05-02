@@ -80,7 +80,7 @@
                 if (result.code == 200) {
                     this.submitHandler(result);
                 } else {
-                    functions.toast(result.msg, 'top')
+                    this.$vux.toast.text(result.msg);
                     return;
                 }
 

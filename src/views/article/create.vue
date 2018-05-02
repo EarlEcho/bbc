@@ -2,7 +2,8 @@
     <div class="article-create-w">
         <group label-width="3rem" label-margin-right="2rem" label-align="right" class="article-group">
             <x-input title="标题" v-model="articleForm.title" placeholder="请输入标题"></x-input>
-            <x-textarea title="内容" v-model="articleForm.content" placeholder="请输入内容" :show-counter="true" :rows="12">
+            <x-textarea title="内容" :max="5000" :autosize="true" v-model="articleForm.content" placeholder="请输入内容"
+                        :show-counter="true" :rows="12">
             </x-textarea>
             <cell title="类别" :value="articleForm.type" is-link @click.native="handleClass"></cell>
         </group>
@@ -18,10 +19,12 @@
                     {{item.label}}
                 </TabItem>
             </Tab>
+            <p style="margin: 1rem 1rem 0  1.2rem;color: #8a8a8a;font-size: 1.4rem">最多选择3个类别标签哦~</p>
             <div class="classify-item">
-                <checker v-model="articleForm.type" default-item-class="class-item"
+                <checker type="checkbox" :max="3" v-model="tempType" default-item-class="class-item"
                          selected-item-class="class-item-selected">
-                    <checker-item v-for="(classfiy,index) in classifyItems" :key="index" :value="classfiy.label">
+                    <checker-item v-for="(classfiy,index) in classifyItems" :key="classfiy.label"
+                                  :value="classfiy.label">
                         {{classfiy.label}}
                     </checker-item>
                 </checker>
@@ -42,6 +45,7 @@
         props: [],
         data() {
             return {
+                tempType: [],
 
                 articleForm: {
                     title: '',
@@ -55,13 +59,34 @@
                 showClassPopup: false,
             }
         },
+        watch: {
+            tempType(val) {
+                console.log(val);
+                this.articleForm.type = val.join(',')
+            }
+        },
         methods: {
             beforeSubmit() {
-                return true;
+                console.log(this.articleForm);
+                if (this.articleForm.title == '') {
+                    this.$vux.toast.text('文章标题不可为空');
+                    return
+                } else if (this.articleForm.content == '') {
+                    this.$vux.toast.text('文章内容不可为空');
+                    return
+                } else if (this.articleForm.type == '') {
+                    this.$vux.toast.text('至少选择一个文章类别');
+                    return
+                } else {
+                    return true;
+                }
 
             },
             submitSuccess() {
-                alert('发布文章成功！');
+                this.$vux.toast.text('发布文章成功，可跳转至我的文章查看');
+                setTimeout(() => {
+                    this.$router.replace('/my');
+                }, 2000)
             },
             fetchClass() {
                 functions.getAjax('http://localhost:8070/static/datas/classify.json', (data) => {
@@ -104,10 +129,12 @@
 
         .article-submit-w {
             position: fixed;
-            bottom: 2rem;
-            left: 5%;
+            bottom: 0;
+            left: 0;
             width: 90%;
             margin: 0 auto;
+            padding: 1rem 5%;
+            background-color: white;
         }
         .classify-item {
             margin: 1.2rem;
@@ -120,11 +147,11 @@
                 margin: 0 1.5rem 1rem 0;
                 border-radius: 0.7rem;
                 font-size: 1.3rem;
-                border: solid 2px lightblue;
+                border: solid 1px #09bb07;
             }
 
             .class-item-selected {
-                background-color: lightblue;
+                background-color: #09bb07;
                 color: white;
             }
 

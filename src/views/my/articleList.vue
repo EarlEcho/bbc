@@ -1,6 +1,7 @@
 <template>
     <div class="article-list-w">
         <x-header>我的文章列表</x-header>
+        <no-info v-show="articleList.length==0"></no-info>
         <div class="w">
             <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index"
                  @click="toDetail(articleItem.id )">
@@ -14,11 +15,11 @@
                 <div class="art-bottom-w">
                     <p class="art-title">{{articleItem.title}}</p>
                     <p class="art-others">
-                        <span class="art-classify">{{articleItem.type}}</span>
+                        <span class="art-classify" v-for="item in articleItem.type">{{item}}</span>
                         <span class="art-comment">
                                 <i class="icon ion-chatbox-working"></i>
                                 {{articleItem.comments.length}}
-                            </span>
+                        </span>
                     </p>
                 </div>
             </div>
@@ -30,10 +31,11 @@
 <script>
     import {XHeader} from 'vux'
     import functions from '@/functions/common'
+    import NoInfo from '@/components/NoInfo'
 
     export default {
         name: '',
-        components: {XHeader},
+        components: {NoInfo, XHeader},
         props: [],
         data() {
             return {
@@ -51,6 +53,9 @@
         mounted() {
             functions.getAjax('/user/info/listPersonArticle', (res) => {
                 this.articleList = res.data.content;
+                for (let i = 0; i < this.articleList.length; i++) {
+                    this.articleList[i].type = this.articleList[i].type.split(',');
+                }
             });
         },
         filters: {
