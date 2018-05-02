@@ -1,6 +1,7 @@
 <template>
     <div class="index-w">
         <search-page></search-page>
+
         <no-info v-show="articleList.length==0"></no-info>
         <div class="w">
             <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index">

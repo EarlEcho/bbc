@@ -3,7 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import {AlertPlugin, ToastPlugin,LoadingPlugin,ConfirmPlugin } from 'vux'
+
+import {AlertPlugin, ToastPlugin, LoadingPlugin, ConfirmPlugin} from 'vux'
 
 Vue.config.productionTip = false;
 
