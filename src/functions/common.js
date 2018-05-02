@@ -1,4 +1,5 @@
 import axios from '../../config/http'
+
 let functions = {
     getAjax(url, callback) {
         axios({
@@ -81,7 +82,15 @@ let functions = {
             return y + '-' + padding0(m) + '-' + padding0(d) + ' ' + padding0(h) + ':' + padding0(mm) + ':' + padding0(s);
         }
     },
-
+//循环
+    foreach(arr, func) {
+        for (var i in arr) {
+            if (func(i, arr[i]) === false) {
+                return false;
+            }
+        }
+        return true;
+    },
 
     timestampQuantum(start = '1508299200', end = '1508302800') {
         let timesEnd = this.timestampToMText(end) + '';
@@ -89,7 +98,6 @@ let functions = {
         let times = this.timestampToMText(start) + '~' + endMinutes;
         return times
     },
-
 
 
 };

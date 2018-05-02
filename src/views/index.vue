@@ -29,6 +29,7 @@
 </template>
 
 <script>
+
     import functions from '@/functions/common'
     //引入主菜单
     import MainMenu from '@/components/MainMenu'
@@ -42,6 +43,7 @@
         components: {NoInfo, MainMenu, SearchPage},
         data() {
             return {
+                selectId: {},
                 defaultIcon: 'static/image/default-icon.jpg',
                 articleList: [],
                 pager: {
@@ -74,7 +76,7 @@
         position: absolute;
         width: 100%;
         min-height: 100%;
-        background-color: #f1f1f1;
+        background-color: white;
         .w {
             padding: 0.8rem;
             margin-bottom: 55px;

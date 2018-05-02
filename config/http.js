@@ -5,7 +5,6 @@ import axios from 'axios'
 //取登录后的sid
 if (localStorage.sid) {
     axios.defaults.headers.sid = (localStorage.sid);
-
 }
 axios.defaults.timeout = 5000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';

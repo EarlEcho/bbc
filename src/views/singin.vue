@@ -41,6 +41,10 @@
             return {
                 tokenDisabled: false,
                 tokenText: '获取验证码',
+                countDownTimer: null,
+                counter: 60,
+
+
                 signUpForm: {
                     nickName: '',
                     emailAddress: '',
@@ -53,34 +57,59 @@
             handelToken() {
                 var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
                 if (!reg.test(this.signUpForm.emailAddress)) {
-                    alert('输入邮箱');
+                    this.$vux.toast.text('邮箱格式错误');
                     return
                 }
+                this.tokenDisabled = true;
+                this.tokenText = "60s";
+                let _this = this;
                 functions.postAjax('/auth/sendEmail', {address: this.signUpForm.emailAddress}, (data) => {
                     if (data.code == 200) {
-                        alert('发送成功');
-                        this.tokenDisabled = true;
-                        this.tokenText = '60s';
+                        _this.$vux.toast.text('验证码发送成功');
+                        console.log('111')
+                    }else{
+                        _this.$vux.toast.text(data.msg);
+                        _this.reset();
                     }
                 })
+                _this.countDownTimer = setInterval(()=> {
+                    console.log(_this.counter);
+                    _this.counter--;
+                    _this.tokenText = _this.counter + "s";
+                    console.log(_this.tokenText);
+                    if (_this.counter <= 0) {
+                        _this.reset();
+                    }
+                }, 1000);
+            },
+            reset: function () {
+                this.tokenDisabled = false;
+                this.tokenText = "获取验证码";
+                clearInterval(this.countDownTimer);
             },
             beforeSubmit() {
+                var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
                 const data = this.signUpForm;
-                if (data.nickName) {
-
-                } else if (data.emailAddress) {
-
-                } else if (data.password) {
-
-                } else if (data.token) {
-
-                }
-
-                return true;
+                if (data.nickName == '') {
+                    this.$vux.toast.text('用户名不能为空');
+                    return
+                } else if (!reg.test(data.emailAddress)) {
+                    this.$vux.toast.text('邮箱格式错误');
+                    return
+                } else if (data.token == '') {
+                    this.$vux.toast.text('验证码不能为空');
+                    return
+                } else if (data.password.length < 6) {
+                    this.$vux.toast.text('密码必须大于等于6位');
+                    return
+                } else return true;
             },
             submitSuccess() {
-                alert('注册成功');
-                this.$router.replace('/sing-up');
+                this.$vux.toast.text('注册成功，即将跳转到登录页');
+                clearInterval(this.countDownTimer);
+                setTimeout(() => {
+                    this.$router.replace('/sing-up');
+                }, 2000)
             }
         }
     }

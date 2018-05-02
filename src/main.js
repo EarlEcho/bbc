@@ -3,11 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import {AlertPlugin, ToastPlugin,LoadingPlugin } from 'vux'
 
 Vue.config.productionTip = false;
 
-
+Vue.use(AlertPlugin)
+Vue.use(ToastPlugin)
+Vue.use(LoadingPlugin)
 /* eslint-disable no-new */
 new Vue({
     el: '#app',

@@ -1,52 +1,61 @@
 <template>
     <div class="my-index-w">
-        <div class="change-icon">
-            <div class="upload">
-                修改头像
-                <input name="file" class="change" type="file" accept="image/png,image/jpeg" @change="update"/>
-            </div>
+        <div class="user-not-login" v-if="!judgeLogin">
+            <p>您还没有登录哦~</p>
+            <x-button @click.native="$router.replace('/sing-up')">登录</x-button>
+            <x-button @click.native="$router.replace('/sing-in')" type="primary">注册</x-button>
         </div>
-        <div class="my-base-infos-w">
-            <div v-if="userInfo.photoPath==null">
-                <blur :blur-amount="12" :url="defaultIcon">
-                    <p class="center"><img :src="defaultIcon"></p>
-                    <p class="my-name">{{userInfo.nickName}}</p>
-                </blur>
+        <div v-else>
+            <div class="change-icon">
+                <div class="upload">
+                    修改头像
+                    <input name="file" class="change" type="file" accept="image/png,image/jpeg" @change="update"/>
+                </div>
             </div>
-            <div v-else>
-                <blur :blur-amount="12" :url="userInfo.photoPath">
-                    <p class="center"><img :src="userInfo.photoPath"></p>
-                    <p class="my-name">{{userInfo.nickName}}</p>
-                </blur>
+            <div class="my-base-infos-w">
+                <div v-if="userInfo.photoPath==null">
+                    <blur :blur-amount="12" :url="defaultIcon">
+                        <p class="center"><img :src="defaultIcon"></p>
+                        <p class="my-name">{{userInfo.nickName}}</p>
+                    </blur>
+                </div>
+                <div v-else>
+                    <blur :blur-amount="12" :url="userInfo.photoPath">
+                        <p class="center"><img :src="userInfo.photoPath"></p>
+                        <p class="my-name">{{userInfo.nickName}}</p>
+                    </blur>
+                </div>
             </div>
 
-        </div>
-        <div class="my-actions-list">
-            <group>
-                <cell is-link link="/my-info">
+
+            <div class="my-actions-list">
+                <group>
+                    <cell is-link link="/my-info">
                     <span slot="title" class="action-title">
                         个人资料
                     </span>
-                </cell>
-                <cell is-link link="/article-add">
+                    </cell>
+                    <cell is-link link="/article-add">
                     <span slot="title" class="action-title">
                         发布文章
                     </span>
-                </cell>
-                <cell is-link link="/my-list">
+                    </cell>
+                    <cell is-link link="/my-list">
                     <span slot="title" class="action-title">
                         我的文章
                     </span>
-                </cell>
-            </group>
-            <group>
-                <cell>
+                    </cell>
+                </group>
+                <group>
+                    <cell>
                     <span slot="title" @click="exitLogin" class="action-title">
                         退出登录
                     </span>
-                </cell>
-            </group>
+                    </cell>
+                </group>
+            </div>
         </div>
+
         <main-menu tabbarIndex="2"></main-menu>
     </div>
 </template>
@@ -55,7 +64,7 @@
     import Uploader from 'vux-uploader'
 
     import functions from '@/functions/common'
-    import {Blur, Group, Cell} from 'vux'
+    import {Blur, Group, Cell, XButton} from 'vux'
     import MainMenu from '@/components/MainMenu'
 
     import axios from 'axios'
@@ -63,12 +72,13 @@
 
     export default {
         name: '',
-        components: {Uploader, MainMenu, Blur, Group, Cell},
+        components: {XButton, Uploader, MainMenu, Blur, Group, Cell},
         data() {
             return {
                 defaultIcon: 'static/image/default-icon.jpg',
                 userInfo: {},
-                iconUrl: []
+                iconUrl: [],
+                judgeLogin:true,
             }
         },
         methods: {
@@ -90,7 +100,6 @@
                 })
             },
             exitLogin() {
-                alert('1111');
                 functions.postAjax('/user/info/logout', {}, (res) => {
                     localStorage.setItem('sid', '');
                     if (res.code == 200) {
@@ -104,11 +113,27 @@
         mounted() {
             functions.getAjax('/user/info/getLoginUser', (res) => {
                 this.userInfo = res;
+                if (res.code == 403) {
+                    // alert('请先登录')
+                    this.judgeLogin = false;
+                }
             });
         }
     }
 </script>
 <style lang="less">
+    .user-not-login {
+        width: 85%;
+        margin: 0 auto;
+        text-align: center;
+        padding-top: 10rem;
+        p {
+            font-size: 1.8rem;
+            line-height: 6rem;
+            color: #09bb07;
+        }
+    }
+
     .change-icon {
         position: absolute;
         right: 1rem;

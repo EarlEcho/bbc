@@ -25,6 +25,7 @@
 <script>
     import {Group, XInput} from 'vux'
     import SubmitBtn from '@/components/SubmitBtn'
+    import axios from '../../config/http'
 
     export default {
         name: '',
@@ -40,22 +41,23 @@
         },
         methods: {
             beforeSubmit() {
-                if (this.signUpForm.emailAddress=='') {
-                    alert('邮箱格式错误');
+                var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+                if (!reg.test(this.signUpForm.emailAddress)) {
+                    this.$vux.toast.text('邮箱格式错误');
                     return
-                }else if(this.signUpForm.password.length<6){
-                    alert('密码必须大于等于6位');
-                }else{
+                }else if (this.signUpForm.password.length < 6) {
+                    this.$vux.toast.text('密码必须大于等于6位');
+                } else {
                     return true;
                 }
-
             },
             submitSuccess(res) {
-                alert('登陆成功');
-
-                localStorage.setItem('sid',(res.data));
-
-                this.$router.replace('/');
+                this.$vux.toast.text('登陆成功，即将跳转到首页');
+                localStorage.setItem('sid', (res.data));
+                axios.defaults.headers.sid = (localStorage.sid);
+                setTimeout(() => {
+                    this.$router.replace('/');
+                }, 2000)
             }
         }
     }
