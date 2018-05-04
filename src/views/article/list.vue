@@ -1,27 +1,27 @@
 <template>
     <div class="article-list-w">
         <x-header>{{headerTiTle}}——文章列表</x-header>
+        <no-info v-show="articleList.length==0"></no-info>
         <div class="w">
-            <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index">
-                <router-link to="/article-detail">
-                    <div class="art-top-w clearfix">
-                        <div class="art-icon g-lf">
-                            <img :src="articleItem.iconUrl" alt="">
-                        </div>
-                        <span class="art-author">{{articleItem.author}}</span>
-                        <span class="art-time g-rt">{{articleItem.time}}</span>
+            <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index"
+                 @click="toDetail(articleItem.id )">
+                <div class="art-top-w clearfix">
+                    <div class="art-icon g-lf">
+                        <img :src="articleItem.userInfo.photoPath==null?defaultIcon:articleItem.userInfo.photoPath">
                     </div>
-                    <div class="art-bottom-w">
-                        <p class="art-title">{{articleItem.title}}</p>
-                        <p class="art-others">
-                            <span class="art-classify">{{articleItem.classify}}</span>
-                            <span class="art-comment">
+                    <span class="art-author">{{articleItem.userInfo.nickName}}</span>
+                    <span class="art-time g-rt">{{articleItem.createTime | toTime}}</span>
+                </div>
+                <div class="art-bottom-w">
+                    <p class="art-title">{{articleItem.title}}</p>
+                    <p class="art-others">
+                        <span class="art-classify" v-for="item in articleItem.type">{{item}}</span>
+                        <span class="art-comment">
                                 <i class="icon ion-chatbox-working"></i>
-                                {{articleItem.comment}}
-                            </span>
-                        </p>
-                    </div>
-                </router-link>
+                                {{articleItem.comments.length}}
+                        </span>
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -31,10 +31,11 @@
 <script>
     import {XHeader} from 'vux'
     import functions from '@/functions/common'
+    import NoInfo from '@/components/NoInfo'
 
     export default {
         name: '',
-        components: {XHeader},
+        components: {NoInfo,XHeader},
         props: [],
         data() {
             return {
@@ -42,11 +43,25 @@
                 articleList: []
             }
         },
-        methods: {},
+        methods: {
+            toDetail(id) {
+                this.$router.push({
+                    path: '/article-detail/' + id,
+                });
+            }
+        },
         mounted() {
-            functions.getAjax('/datas/index-article-list.json', (data) => {
-                this.articleList = data.content.articleList;
-            });
+            if(this.$route.query.type){
+                let type = this.$route.query.type;
+                this.headerTiTle = type;
+
+                functions.getAjax('/user/article/pageListArticle?type=' + type, (res) => {
+                    this.articleList = res.data.content;
+                    for (let i = 0; i < this.articleList.length; i++) {
+                        this.articleList[i].type = this.articleList[i].type.split(',');
+                    }
+                });
+            }
         }
     }
 </script>

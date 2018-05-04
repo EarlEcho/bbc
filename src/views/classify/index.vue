@@ -7,7 +7,7 @@
             </TabItem>
         </Tab>
         <div class="classify-item">
-            <span v-for="(classfiy,index) in classifyItems" :key="index">
+            <span v-for="(classfiy,index) in classifyItems" :key="index" @click="viewTypeArticle(classfiy.label)">
                 <router-link to="/article-list">
                 {{classfiy.label}}
                 </router-link>
@@ -23,6 +23,7 @@
     import MainMenu from '@/components/MainMenu'
     import functions from '@/functions/common'
     import {Tab, TabItem} from 'vux'
+
     export default {
         name: '',
         components: {
@@ -32,19 +33,111 @@
             return {
                 tabIndex: 0,
                 classifyList: [],
-                classifyItems: []
+                classifyItems: [],
+                classifyList: [
+                    {
+                        id: 1,
+                        label: "前端",
+                        children: [
+                            {
+                                id: 11,
+                                label: "JavaScript"
+                            },
+                            {
+                                id: 12,
+                                label: "HTML"
+                            },
+                            {
+                                id: 13,
+                                label: "CSS"
+                            },
+                            {
+                                id: 14,
+                                label: "React"
+                            },
+                            {
+                                id: 15,
+                                label: "Vue"
+                            }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        label: "后端",
+                        children: [
+                            {
+                                id: 21,
+                                label: "Java"
+                            },
+                            {
+                                id: 22,
+                                label: "Node.js"
+                            },
+                            {
+                                id: 23,
+                                label: "Python"
+                            },
+                            {
+                                id: 24,
+                                label: "PHP"
+                            },
+                            {
+                                id: 25,
+                                label: "Go"
+                            }
+                        ]
+                    },
+                    {
+                        id: 3,
+                        label: "服务器端",
+                        children: [
+                            {
+                                id: 31,
+                                label: "MySQL"
+                            },
+                            {
+                                id: 32,
+                                label: "Oracel"
+                            },
+                            {
+                                id: 33,
+                                label: "Redis"
+                            }
+                        ]
+                    },
+                    {
+                        id: 4,
+                        label: "其他",
+                        children: [
+                            {
+                                id: 41,
+                                label: "信息安全"
+                            },
+                            {
+                                id: 42,
+                                label: "通信工程"
+                            },
+                            {
+                                id: 43,
+                                label: "其他"
+                            }
+                        ]
+                    }
+                ]
+
             }
         },
         methods: {
             fetchClass() {
-                functions.getAjax('http://localhost:8070/static/datas/classify.json', (data) => {
-                    this.classifyList = data.classfiyList;
-                    this.classifyItems = this.classifyList[0].children;
+                this.classifyItems = this.classifyList[0].children;
 
-                });
             },
             handlerTab(index) {
                 this.classifyItems = this.classifyList[index].children;
+            },
+            viewTypeArticle(type) {
+                console.log(type);
+                this.$router.push('/article-list?type=' + type);
             }
         },
         mounted() {
@@ -72,7 +165,7 @@
                 margin: 0 1.5rem 1rem 0;
                 border-radius: 0.7rem;
                 font-size: 1.3rem;
-                a{
+                a {
                     color: white;
                 }
             }

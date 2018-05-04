@@ -52,12 +52,16 @@
                 }
             },
             submitSuccess(res) {
-                this.$vux.toast.text('登陆成功，即将跳转到首页');
-                localStorage.setItem('sid', (res.data));
-                axios.defaults.headers.sid = (localStorage.sid);
-                setTimeout(() => {
-                    this.$router.replace('/');
-                }, 2000)
+                if(res.code==200){
+                    this.$vux.toast.text('登陆成功，即将跳转到首页');
+                    localStorage.setItem('sid', (res.data));
+                    axios.defaults.headers.sid = (localStorage.sid);
+                    setTimeout(() => {
+                        this.$router.replace('/');
+                    }, 2000)
+                }else{
+                    this.$vux.toast.text(res.msg);
+                }
             }
         }
     }

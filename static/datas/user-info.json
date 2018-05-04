@@ -1,9 +1,0 @@
-{
-    "code": "200",
-    "content": {
-        "userInfo": {
-            "name": "Echo",
-            "icon": "static/image/3.jpeg"
-        }
-    }
-}

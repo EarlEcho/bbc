@@ -93,7 +93,7 @@
                     headers: {'Content-Type': 'multipart/form-data'}
                 }
                 // 添加请求头
-                axios.post('http://10.10.20.158:8010/user/info/fileUpload', param, config).then(response => {
+                axios.post('http://47.104.150.0:8010/user/info/fileUpload', param, config).then(response => {
                     if (response.data.code === 200) {
                         self.userInfo.photoPath = response.data.data;
                     }

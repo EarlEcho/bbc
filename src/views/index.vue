@@ -1,6 +1,7 @@
 <template>
     <div class="index-w">
-        <search-page></search-page>
+        <search  @on-submit="resultClick" @on-cancel="onCancel"
+                v-model="searchName" position="static" top="0px" ref="search"></search>
 
         <no-info v-show="articleList.length==0"></no-info>
         <div class="w">
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-
+    import {Search} from 'vux'
     import functions from '@/functions/common'
     //引入主菜单
     import MainMenu from '@/components/MainMenu'
@@ -40,10 +41,11 @@
 
     export default {
         name: '',
-        components: {NoInfo, MainMenu, SearchPage},
+        components: {Search, NoInfo, MainMenu, SearchPage},
         data() {
             return {
                 selectId: {},
+                searchName:'',
                 defaultIcon: 'static/image/default-icon.jpg',
                 articleList: [],
                 pager: {
@@ -61,14 +63,32 @@
             });
         },
         methods: {
-            viewUser(id){
+            viewUser(id) {
                 this.$router.push({
-                    path: '/users/'+ id,
+                    path: '/users/' + id,
                 });
             },
             toDetail(id) {
                 this.$router.push({
                     path: '/article-detail/' + id,
+                });
+            },
+            resultClick() {
+                console.log(this.searchName);
+                functions.getAjax('/user/article/pageListArticle?title=' + this.searchName, (res) => {
+                    this.articleList = res.data.content;
+                    for (let i = 0; i < this.articleList.length; i++) {
+                        this.articleList[i].type = this.articleList[i].type.split(',');
+                    }
+                });
+
+            },
+            onCancel(){
+                functions.getAjax('/user/article/pageListArticle', (res) => {
+                    this.articleList = res.data.content;
+                    for (let i = 0; i < this.articleList.length; i++) {
+                        this.articleList[i].type = this.articleList[i].type.split(',');
+                    }
                 });
             }
         },

@@ -18,7 +18,7 @@
 
         <!--文章评论-->
         <div class="article-comment-w">
-            <p class="write-comment" @click="showWritePopup=true">写评论</p>
+            <p class="write-comment" @click="showCoomentPopup">写评论</p>
             <p class="comment-name">评论区</p>
             <no-comment v-show="articleDeatil.comments.length==0"></no-comment>
 
@@ -185,7 +185,19 @@
             },
             //查看评论详情
             commentDetail(id) {
-                this.showCommentPopup = true;
+                // this.showCommentPopup = true;
+            },
+            showCoomentPopup() {
+
+                functions.getAjax('/user/info/getLoginUser', (res) => {
+                    if (res.code == 403) {
+                        this.$vux.toast.text('您还未登录~');
+                        return;
+                    } else {
+                        this.showWritePopup = true;
+
+                    }
+                });
             }
         },
         mounted() {

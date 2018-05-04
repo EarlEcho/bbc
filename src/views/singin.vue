@@ -104,12 +104,18 @@
                     return
                 } else return true;
             },
-            submitSuccess() {
-                this.$vux.toast.text('注册成功，即将跳转到登录页');
-                clearInterval(this.countDownTimer);
-                setTimeout(() => {
-                    this.$router.replace('/sing-up');
-                }, 2000)
+            submitSuccess(res) {
+                console.log(res)
+                if(res.code==200){
+                    this.$vux.toast.text('注册成功，即将跳转到登录页');
+                    clearInterval(this.countDownTimer);
+                    setTimeout(() => {
+                        this.$router.replace('/sing-up');
+                    }, 2000)
+                }else{
+                    this.$vux.toast.text(res.msg);
+                }
+
             }
         }
     }

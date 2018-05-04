@@ -57,6 +57,96 @@
                 classifyItems: [],
                 classifyList: [],
                 showClassPopup: false,
+                classifyList: [
+                    {
+                        id: 1,
+                        label: "前端",
+                        children: [
+                            {
+                                id: 11,
+                                label: "JavaScript"
+                            },
+                            {
+                                id: 12,
+                                label: "HTML"
+                            },
+                            {
+                                id: 13,
+                                label: "CSS"
+                            },
+                            {
+                                id: 14,
+                                label: "React"
+                            },
+                            {
+                                id: 15,
+                                label: "Vue"
+                            }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        label: "后端",
+                        children: [
+                            {
+                                id: 21,
+                                label: "Java"
+                            },
+                            {
+                                id: 22,
+                                label: "Node.js"
+                            },
+                            {
+                                id: 23,
+                                label: "Python"
+                            },
+                            {
+                                id: 24,
+                                label: "PHP"
+                            },
+                            {
+                                id: 25,
+                                label: "Go"
+                            }
+                        ]
+                    },
+                    {
+                        id: 3,
+                        label: "服务器端",
+                        children: [
+                            {
+                                id: 31,
+                                label: "MySQL"
+                            },
+                            {
+                                id: 32,
+                                label: "Oracel"
+                            },
+                            {
+                                id: 33,
+                                label: "Redis"
+                            }
+                        ]
+                    },
+                    {
+                        id: 4,
+                        label: "其他",
+                        children: [
+                            {
+                                id: 41,
+                                label: "信息安全"
+                            },
+                            {
+                                id: 42,
+                                label: "通信工程"
+                            },
+                            {
+                                id: 43,
+                                label: "其他"
+                            }
+                        ]
+                    }
+                ]
             }
         },
         watch: {
@@ -89,11 +179,8 @@
                 }, 2000)
             },
             fetchClass() {
-                functions.getAjax('http://localhost:8070/static/datas/classify.json', (data) => {
-                    this.classifyList = data.classfiyList;
-                    this.classifyItems = this.classifyList[0].children;
+                this.classifyItems = this.classifyList[0].children;
 
-                });
             },
             handlerTab(index) {
                 this.classifyItems = this.classifyList[index].children;

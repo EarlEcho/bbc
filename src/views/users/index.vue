@@ -56,7 +56,14 @@
         mounted() {
             let id = this.$route.params.id;
             functions.getAjax('/user/info/getOne?id=' + id, (res) => {
-                this.userInfo = res.data;
+
+                if (res.code == 403) {
+                    this.$vux.toast.text('您还未登录，没有权限查看其他用户的信息哦！');
+                    return;
+                } else {
+                    this.userInfo = res.data;
+
+                }
             });
         },
         filters: {
