@@ -1,6 +1,8 @@
 <template>
     <div class="article-create-w">
-        <group label-width="3rem" label-margin-right="2rem" label-align="right" class="article-group">
+        <x-header>发布文章</x-header>
+
+        <group label-width="5rem" label-margin-right="2rem" label-align="right" class="article-group">
             <x-input title="标题" v-model="articleForm.title" placeholder="请输入标题"></x-input>
             <x-textarea title="内容" :max="5000" :autosize="true" v-model="articleForm.content" placeholder="请输入内容"
                         :show-counter="true" :rows="12">
@@ -37,11 +39,11 @@
     import SubmitBtn from '@/components/SubmitBtn'
 
     import functions from '@/functions/common'
-    import {Group, XInput, XTextarea, Cell, Popup, Tab, TabItem, Checker, CheckerItem} from 'vux'
+    import {Group, XInput, XTextarea, Cell, Popup, Tab, TabItem, Checker, CheckerItem,XHeader} from 'vux'
 
     export default {
         name: '',
-        components: {SubmitBtn, Group, XInput, XTextarea, Cell, Popup, Tab, TabItem, Checker, CheckerItem},
+        components: {SubmitBtn, Group, XInput, XTextarea, Cell, Popup, Tab, TabItem, Checker, CheckerItem,XHeader},
         props: [],
         data() {
             return {

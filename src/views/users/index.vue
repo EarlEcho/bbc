@@ -1,5 +1,6 @@
 <template>
     <div class="users-w">
+        <x-header>用户信息</x-header>
         <div>
             <div class="user-base-info-w">
                 <div v-if="userInfo.photoPath==null">
@@ -36,7 +37,7 @@
     import Uploader from 'vux-uploader'
 
     import functions from '@/functions/common'
-    import {Blur, Group, Cell, XButton} from 'vux'
+    import {Blur, Group, Cell, XButton, XHeader} from 'vux'
     import MainMenu from '@/components/MainMenu'
 
     import axios from 'axios'
@@ -44,7 +45,7 @@
 
     export default {
         name: '',
-        components: {XButton, Uploader, MainMenu, Blur, Group, Cell},
+        components: {XButton, Uploader, MainMenu, Blur, Group, Cell, XHeader},
         data() {
             return {
                 defaultIcon: 'static/image/default-icon.jpg',

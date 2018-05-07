@@ -1,50 +1,55 @@
 <template>
     <div class="article-detail-w">
-        <div class="detail-header-w">
-            <div>
-                <img :src="articleDeatil.userInfo.photoPath===null?defaultIcon:articleDeatil.userInfo.photoPath"
-                     @click="viewUser(articleDeatil.userInfo.id)">
-                <span>{{articleDeatil.userInfo.nickName}}</span>
-                <span class="g-rt">{{articleDeatil.createTime | toTime}}</span>
+        <x-header>文章详情</x-header>
+        <div class="w">
+            <div class="detail-header-w">
+                <div>
+                    <img :src="articleDeatil.userInfo.photoPath===null?defaultIcon:articleDeatil.userInfo.photoPath"
+                         @click="viewUser(articleDeatil.userInfo.id)">
+                    <span>{{articleDeatil.userInfo.nickName}}</span>
+                    <span class="g-rt">{{articleDeatil.createTime | toTime}}</span>
+                </div>
+
+            </div>
+            <div class="detail-content-w">
+                <p class="article-title-w">{{articleDeatil.title}}</p>
+                <p class="art-content" v-html="articleDeatil.content">
+                </p>
+                <p>标签：<span class="art-classify" v-for="item in articleDeatil.type">{{item}}</span></p>
             </div>
 
-        </div>
-        <div class="detail-content-w">
-            <p class="article-title-w">{{articleDeatil.title}}</p>
-            <p class="art-content" v-html="articleDeatil.content">
-            </p>
-            <p>标签：<span class="art-classify" v-for="item in articleDeatil.type">{{item}}</span></p>
-        </div>
+            <!--文章评论-->
+            <div class="article-comment-w">
+                <p class="write-comment" @click="showCoomentPopup">写评论</p>
+                <p class="comment-name">评论区</p>
+                <no-comment v-show="articleDeatil.comments.length==0"></no-comment>
 
-        <!--文章评论-->
-        <div class="article-comment-w">
-            <p class="write-comment" @click="showCoomentPopup">写评论</p>
-            <p class="comment-name">评论区</p>
-            <no-comment v-show="articleDeatil.comments.length==0"></no-comment>
+                <div class="comment-item" v-for="commentItem in articleDeatil.comments"
+                     @click="commentDetail(commentItem.id)">
+                    <div class="comment-header clearfix">
+                        <div class="c-left g-lf">
+                            <img
+                                :src="commentItem.userInfo.photoPath===null?defaultIcon:commentItem.userInfo.photoPath">
 
-            <div class="comment-item" v-for="commentItem in articleDeatil.comments"
-                 @click="commentDetail(commentItem.id)">
-                <div class="comment-header clearfix">
-                    <div class="c-left g-lf">
-                        <img :src="commentItem.userInfo.photoPath===null?defaultIcon:commentItem.userInfo.photoPath">
-
+                        </div>
+                        <div class="c-right g-lf">
+                            <p>{{commentItem.userInfo.nickName}}</p>
+                            <p>{{commentItem.createTime | toTime}}</p>
+                        </div>
                     </div>
-                    <div class="c-right g-lf">
-                        <p>{{commentItem.userInfo.nickName}}</p>
-                        <p>{{commentItem.createTime | toTime}}</p>
-                    </div>
-                </div>
-                <p class="comment-info">{{commentItem.content}}</p>
+                    <p class="comment-info">{{commentItem.content}}</p>
 
-                <!--某个评论的子评论-->
-                <div class="inner-comment" v-show="commentItem.childComment">
-                    <p v-for="inner in commentItem.childComment">
-                        <span>{{inner.name}}：</span>{{inner.content}}
-                    </p>
-                    <span v-show="commentItem.commentNum>1">查看其他{{commentItem.commentNum}}条评论</span>
+                    <!--某个评论的子评论-->
+                    <div class="inner-comment" v-show="commentItem.childComment">
+                        <p v-for="inner in commentItem.childComment">
+                            <span>{{inner.name}}：</span>{{inner.content}}
+                        </p>
+                        <span v-show="commentItem.commentNum>1">查看其他{{commentItem.commentNum}}条评论</span>
+                    </div>
                 </div>
             </div>
         </div>
+
         <!--评论弹窗-->
         <popup v-model="showWritePopup" height="30%" class="article-comment-input">
             <group>
@@ -96,13 +101,13 @@
 
 <script>
     import functions from '@/functions/common'
-    import {Popup, XTextarea, Group} from 'vux'
+    import {Popup, XTextarea, Group, XHeader} from 'vux'
     import SubmitBtn from '@/components/SubmitBtn'
     import NoComment from '@/components/NoComment'
 
     export default {
         name: '',
-        components: {NoComment, Popup, XTextarea, Group, SubmitBtn},
+        components: {NoComment, Popup, XTextarea, Group, SubmitBtn, XHeader},
         props: [],
         data() {
             return {
@@ -178,9 +183,11 @@
                 }
             },
             submitSuccess() {
+                let _this = this;
                 this.$vux.toast.text('评论成功');
+                this.showWritePopup = false;
                 setTimeout(() => {
-                    this.$router.go(0);
+                    _this.$router.go(0);
                 }, 1000)
             },
             //查看评论详情
@@ -219,9 +226,12 @@
         position: absolute;
         width: 100%;
         min-height: 100%;
-        padding: 1rem;
         box-sizing: border-box;
+        .w {
+            padding: 1rem;
+        }
         .detail-header-w {
+            padding: 1rem;
             div:first-child {
                 border-bottom: solid 1px #f5f5f5;
                 padding-bottom: 1rem;

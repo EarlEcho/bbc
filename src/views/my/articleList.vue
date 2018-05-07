@@ -3,23 +3,23 @@
         <x-header>我的文章列表</x-header>
         <no-info v-show="articleList.length==0"></no-info>
         <div class="w">
-            <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index"
-                 @click="toDetail(articleItem.id )">
+            <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index">
                 <div class="art-top-w clearfix">
-                    <div class="art-icon g-lf">
+                    <div class="art-icon g-lf" @click="viewUser(articleItem.userInfo.id)">
                         <img :src="articleItem.userInfo.photoPath==null?defaultIcon:articleItem.userInfo.photoPath">
                     </div>
                     <span class="art-author">{{articleItem.userInfo.nickName}}</span>
                     <span class="art-time g-rt">{{articleItem.createTime | toTime}}</span>
                 </div>
                 <div class="art-bottom-w">
-                    <p class="art-title">{{articleItem.title}}</p>
-                    <p class="art-others">
+                    <p class="art-title" @click="toDetail(articleItem.id )">{{articleItem.title}}</p>
+                    <p class="art-others clearfix">
                         <span class="art-classify" v-for="item in articleItem.type">{{item}}</span>
                         <span class="art-comment">
                                 <i class="icon ion-chatbox-working"></i>
                                 {{articleItem.comments.length}}
                         </span>
+                        <x-button mini plain @click.native="removeArticle(articleItem.id)">删除</x-button>
                     </p>
                 </div>
             </div>
@@ -29,13 +29,13 @@
 </template>
 
 <script>
-    import {XHeader} from 'vux'
+    import {XHeader, XButton} from 'vux'
     import functions from '@/functions/common'
     import NoInfo from '@/components/NoInfo'
 
     export default {
         name: '',
-        components: {NoInfo, XHeader},
+        components: {NoInfo, XHeader, XButton},
         props: [],
         data() {
             return {
@@ -48,15 +48,49 @@
                 this.$router.push({
                     path: '/article-detail/' + id,
                 });
+            },
+            //删除文章
+            removeArticle(id) {
+                console.log('删除文章', id);
+                let _this = this;
+                _this.$vux.confirm.show({
+                    title: '提示',
+                    content: '确认删除该文章吗？',
+                    // 组件除show外的属性
+                    onConfirm() {
+                        functions.postAjax('/user/article/delete', {id: id}, (res) => {
+                            console.log(res)
+                            if (res.code == 200) {
+                                _this.$vux.toast.text('删除文章成功！');
+                                setTimeout(() => {
+                                    this.$router.go(0);
+                                }, 1000)
+                                _this.fetchData();
+                            } else {
+                                _this.$vux.toast.text(res.msg);
+                            }
+                        });
+                    }
+                })
+
+
+            },
+            viewUser(id) {
+                this.$router.push({
+                    path: '/users/' + id,
+                });
+            },
+            fetchData() {
+                functions.getAjax('/user/info/listPersonArticle', (res) => {
+                    this.articleList = res.data.content;
+                    for (let i = 0; i < this.articleList.length; i++) {
+                        this.articleList[i].type = this.articleList[i].type.split(',');
+                    }
+                });
             }
         },
         mounted() {
-            functions.getAjax('/user/info/listPersonArticle', (res) => {
-                this.articleList = res.data.content;
-                for (let i = 0; i < this.articleList.length; i++) {
-                    this.articleList[i].type = this.articleList[i].type.split(',');
-                }
-            });
+            this.fetchData();
         },
         filters: {
             toTime(value) {
@@ -116,6 +150,12 @@
             }
             .art-others {
                 margin-top: .8rem;
+                position: relative;
+                button {
+                    position: absolute;
+                    bottom: 0.1rem;
+                    right: 0.5rem;
+                }
             }
 
             .art-comment {

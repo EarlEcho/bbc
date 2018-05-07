@@ -1,6 +1,7 @@
 <template>
     <div class="article-create-w">
-        <group label-width="6rem" label-margin-right="2rem" label-align="right" class="article-group">
+        <x-header>个人信息</x-header>
+        <group label-width="9rem" label-margin-right="2rem" label-align="right" class="article-group">
 
             <x-input title="用户名" v-model="userInfo.nickName" placeholder="请输入用户名"></x-input>
             <x-textarea :max="150" title="个人简介" v-model="userInfo.introduce" placeholder="请输入个人简介" :show-counter="true"
@@ -35,11 +36,11 @@
     import SubmitBtn from '@/components/SubmitBtn'
 
     import functions from '@/functions/common'
-    import {Group, XInput, XTextarea, Cell, Checker, CheckerItem} from 'vux'
+    import {Group, XInput, XTextarea, Cell, Checker, CheckerItem, XHeader} from 'vux'
 
     export default {
         name: '',
-        components: {SubmitBtn, Group, XInput, XTextarea, Cell, Checker, CheckerItem},
+        components: {SubmitBtn, Group, XInput, XTextarea, Cell, Checker, CheckerItem, XHeader},
         props: [],
         data() {
             return {
@@ -49,9 +50,7 @@
                     introduce: '',
                     gender: '0'
                 },
-                otherInfo:{
-
-                }
+                otherInfo: {}
             }
         },
         mounted() {
@@ -67,7 +66,7 @@
                         gender: String(res.gender)
 
                     };
-                    this.otherInfo ={
+                    this.otherInfo = {
                         createTime: res.createTime,
                         emailAddress: res.emailAddress
                     }

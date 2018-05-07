@@ -15,8 +15,8 @@
             <router-link to="/sing-in">
                 <span class="g-lf">立即注册</span>
             </router-link>
-            <router-link to="/sing-in">
-                <!--<span class="g-rt">忘记密码</span>-->
+            <router-link to="/re-pwd">
+                <span class="g-rt">忘记密码</span>
             </router-link>
         </p>
     </div>

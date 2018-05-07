@@ -4,16 +4,16 @@
         <no-info v-show="articleList.length==0"></no-info>
         <div class="w">
             <div class="article-item-w" v-for="(articleItem,index) in articleList" :key="index"
-                 @click="toDetail(articleItem.id )">
+                 >
                 <div class="art-top-w clearfix">
-                    <div class="art-icon g-lf">
+                    <div class="art-icon g-lf"  @click="viewUser(articleItem.userInfo.id)">
                         <img :src="articleItem.userInfo.photoPath==null?defaultIcon:articleItem.userInfo.photoPath">
                     </div>
                     <span class="art-author">{{articleItem.userInfo.nickName}}</span>
                     <span class="art-time g-rt">{{articleItem.createTime | toTime}}</span>
                 </div>
                 <div class="art-bottom-w">
-                    <p class="art-title">{{articleItem.title}}</p>
+                    <p class="art-title" @click="toDetail(articleItem.id )">{{articleItem.title}}</p>
                     <p class="art-others">
                         <span class="art-classify" v-for="item in articleItem.type">{{item}}</span>
                         <span class="art-comment">
@@ -48,6 +48,16 @@
                 this.$router.push({
                     path: '/article-detail/' + id,
                 });
+            },
+            viewUser(id) {
+                this.$router.push({
+                    path: '/users/' + id,
+                });
+            },
+        },
+        filters: {
+            toTime(value) {
+                return functions.timestampToshortText(value);
             }
         },
         mounted() {

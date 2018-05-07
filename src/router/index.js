@@ -8,6 +8,9 @@ const SingUp = () => import('@/views/singup')
 //注册
 const SingIn = () => import('@/views/singin')
 
+//忘记密码
+const RePwd = () => import('@/views/rePwd')
+
 //我的
 const My = () => import('@/views/my/index')
 
@@ -50,6 +53,10 @@ const router = new Router({
             path: '/sing-in',
             meta: {title: "注册"},
             component: SingIn
+        }, {
+            path: '/re-pwd',
+            meta: {title: "忘记密码"},
+            component: RePwd
         }, {
             path: '/my',
             meta: {title: '个人中心'},
